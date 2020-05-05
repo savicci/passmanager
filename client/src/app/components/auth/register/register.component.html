@@ -1,0 +1,32 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
+  <div>
+    <label for="email">
+      Email
+    </label>
+    <input id="email" type="email" formControlName="email">
+  </div>
+
+  <div>
+    <label for="password">
+      Password
+    </label>
+    <input id="password" type="password" formControlName="password">
+  </div>
+
+  <div>
+    <label for="passwordReEnter">
+      Enter password again
+    </label>
+    <input id="passwordReEnter" type="password" formControlName="passwordReEnter">
+  </div>
+
+  <div>
+    <label for="passphrase">
+      Passphrase used for encryption
+    </label>
+    <input id="passphrase" type="password" formControlName="passphrase">
+  </div>
+
+
+  <button class="button" type="submit">Register</button>
+</form>

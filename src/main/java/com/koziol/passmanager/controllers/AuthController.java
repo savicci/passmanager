@@ -6,15 +6,22 @@ import com.koziol.passmanager.controllers.models.RegisterRequest;
 import com.koziol.passmanager.database.models.User;
 import com.koziol.passmanager.database.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.jedis.JedisConnection;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.hibernate5.SpringSessionContext;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.session.security.SpringSessionBackedSessionRegistry;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @RestController
@@ -23,6 +30,8 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private CustomUserDetailsService userDetailsService;
+
+    private SessionRegistry sessionRegistry = new SessionRegistryImpl();
 
     @Autowired
     public AuthController(PasswordEncoder passwordEncoder, UserRepository userRepository, CustomUserDetailsService userDetailsService) {
@@ -47,10 +56,18 @@ public class AuthController {
         return ResponseEntity.ok("Registration succesfull");
     }
 
-    @RequestMapping("/user")
+    @GetMapping("/user")
     public CustomUserDetails getUserInfo(Authentication authentication) {
         CustomUserDetails persistedUserDetails = userDetailsService.loadUserByUsername(authentication.getName());
         persistedUserDetails.setPassword(null);
         return persistedUserDetails;
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logoutUser(HttpServletRequest request, HttpServletResponse response, Authentication authentication){
+        SecurityContextHolder.clearContext();
+        sessionRegistry.removeSessionInformation(request.getSession().getId());
+        //TODO take care of deleting cookie on redis side(only deletes one of 4)
+        return ResponseEntity.ok("all good man");
     }
 }

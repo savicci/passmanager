@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js",
                         "/auth/register",
-                        "/public")
+                        "/public")//TODO remove after testing
                 .permitAll()
                 .and()
                 .authorizeRequests()

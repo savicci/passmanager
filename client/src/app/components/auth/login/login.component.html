@@ -1,0 +1,14 @@
+<form [formGroup]="loginForm" (ngSubmit)="authenticate(loginForm.value)">
+  <div>
+    <label for="email">Email</label>
+      <input id="email" type="text" formControlName="email"/>
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <input id="password" type="password" formControlName="password"/>
+  </div>
+
+  <button type="submit">Authenticate me</button>
+</form>
+
