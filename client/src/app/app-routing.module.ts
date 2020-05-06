@@ -7,6 +7,7 @@ import {RegisterComponent} from "./components/auth/register/register.component";
 import {PublicComponent} from "./components/public/public.component";
 import {PrivateComponent} from "./components/private/private.component";
 import {LogoutComponent} from "./components/auth/logout/logout.component";
+import {VaultComponent} from "./components/vaults/vault/vault.component";
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'public', component: PublicComponent},
   {path: 'private', component: PrivateComponent},
   {path: 'logout', component: LogoutComponent},
+  {path: 'vault', component: VaultComponent},
   {path: '**', redirectTo: ''}
 ];
 

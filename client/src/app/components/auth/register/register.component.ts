@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {AuthenticationService} from "../../services/authentication.service";
 
@@ -22,13 +22,12 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(data){
-    // if(data.password !== data.passwordReEnter){
-    //   console.log('Passwords does not match');
-    // }else{
-      this.authService.register(data);
-
+  async onSubmit(data) {
+    if (data.password !== data.passwordReEnter) {
+      console.log('Passwords does not match');
+    } else {
+      await this.authService.register(data);
       this.registerForm.reset();
-    // }
+    }
   }
 }

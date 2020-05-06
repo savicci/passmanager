@@ -1,0 +1,7 @@
+<p>vault works!</p>
+
+<button (click)="createNewVault()">Create new vault</button>
+
+<div *ngFor="let item of vaults">
+  <app-vault-row [vaultRow]="item"></app-vault-row>
+</div>

@@ -12,6 +12,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { PublicComponent } from './components/public/public.component';
 import { PrivateComponent } from './components/private/private.component';
 import { LogoutComponent } from './components/auth/logout/logout.component';
+import { VaultComponent } from './components/vaults/vault/vault.component';
+import { VaultRowComponent } from './components/vaults/vault/vault-row/vault-row.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { LogoutComponent } from './components/auth/logout/logout.component';
     HomeComponent,
     PublicComponent,
     PrivateComponent,
-    LogoutComponent
+    LogoutComponent,
+    VaultComponent,
+    VaultRowComponent
   ],
   imports: [
     BrowserModule,

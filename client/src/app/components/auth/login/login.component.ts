@@ -13,7 +13,8 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthenticationService, private formBuilder: FormBuilder) {
     this.loginForm = this.formBuilder.group({
       email: '',
-      password: ''
+      password: '',
+      passphrase: ''
     });
   }
 
@@ -21,8 +22,7 @@ export class LoginComponent implements OnInit {
   }
 
   authenticate(data) {
-    console.log(data);
-    this.authService.login({email: data.email, password: data.password});
+    this.authService.login({email: data.email, password: data.password}, data.passphrase);
     this.loginForm.reset();
   }
 }
