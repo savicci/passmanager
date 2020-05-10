@@ -5,13 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Map;
+
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
-public class RegisterRequest {
-    private String email;
-    private String password;
-    private String encryptedPrivateKey;
-    private String publicKey;
+public class ModifyVaultRQ {
+    private Map<String, String> vaultDataByVaultName;
 }

@@ -12,10 +12,13 @@ import javax.persistence.*;
 @EqualsAndHashCode
 public class VaultUser {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long vaultUserId;
-    private String vaultName;
-    private String vaultId;
     private byte[] vaultKey;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "VAULT_ID")
+    private Vault vault;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")

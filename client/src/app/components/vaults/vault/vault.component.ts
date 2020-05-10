@@ -17,7 +17,7 @@ export class VaultComponent implements OnInit {
     this.vaults = [];
   }
 
-  createNewVault() {
-    this.vaults.push(this.vaultService.createNewVault('thevault'));
+  async createNewVault() {
+    await this.vaultService.createNewVault('thevault');
   }
 }

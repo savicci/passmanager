@@ -17,4 +17,10 @@ export class EncryptionService {
     this.keys = imported.keyPair;
     this.iv = imported.iv;
   }
+
+  async publicEncrypt(data: string){
+    return RsaEncryption.publicEncrypt(new TextEncoder().encode(data), this.keys.publicKey)
+      .then(res => res)
+      .catch(err => {console.log(err); return err;});
+  }
 }

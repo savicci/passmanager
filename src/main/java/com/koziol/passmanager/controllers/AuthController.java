@@ -2,22 +2,17 @@ package com.koziol.passmanager.controllers;
 
 import com.koziol.passmanager.configuration.security.CustomUserDetails;
 import com.koziol.passmanager.configuration.security.CustomUserDetailsService;
-import com.koziol.passmanager.controllers.models.RegisterRequest;
+import com.koziol.passmanager.controllers.models.RegisterRQ;
 import com.koziol.passmanager.database.models.User;
 import com.koziol.passmanager.database.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.jedis.JedisConnection;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.hibernate5.SpringSessionContext;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +36,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRQ request) {
         Optional<User> user = userRepository.findByEmail(request.getEmail());
         if (user.isPresent()) {
             return new ResponseEntity<>("user with provided email already exists", HttpStatus.FORBIDDEN);

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class LoginRequest {
+public class LoginRQ {
     private String email;
     private String password;
 }
