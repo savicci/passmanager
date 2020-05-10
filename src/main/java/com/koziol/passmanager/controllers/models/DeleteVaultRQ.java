@@ -10,5 +10,5 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode
 public class DeleteVaultRQ {
-    String vaultName;
+    Long vaultId;
 }

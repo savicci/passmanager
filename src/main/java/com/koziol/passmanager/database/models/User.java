@@ -22,7 +22,7 @@ public class User {
     private byte[] encryptedPrivateKey;
     private byte[] publicKey;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     List<VaultUser> vaultUserList;
 
     public User(String email, String password, byte[] encryptedPrivateKey, byte[] publicKey) {

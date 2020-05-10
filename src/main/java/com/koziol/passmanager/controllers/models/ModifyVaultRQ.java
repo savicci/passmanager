@@ -12,5 +12,5 @@ import java.util.Map;
 @Setter
 @EqualsAndHashCode
 public class ModifyVaultRQ {
-    private Map<String, String> vaultDataByVaultName;
+    private Map<Long, String> vaultDataByVaultId;
 }
