@@ -127,7 +127,9 @@ public class VaultController {
         VaultUser vaultUser = new VaultUser();
         vaultUser.setVault(insertedVault);
         vaultUser.setVaultKey(request.getEncryptedVaultKey().getBytes());
-        vaultUser.setVaultRole(vaultRoleRepository.findByRoleName("CREATOR"));
+        vaultUser.setVaultRole(vaultRoleRepository.findByRoleName("CREATOR").get());
+        vaultUser.setCreatedBy(user);
+        vaultUser.setCreatedDate(LocalDateTime.now());
         vaultUser.setUser(user);
         vaultUserRepository.save(vaultUser);
     }

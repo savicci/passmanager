@@ -28,8 +28,13 @@ public class TestDataInjector {
             User user = new User("user", passwordEncoder.encode("password"), "private".getBytes(), "public".getBytes());
             userRepository.save(user);
 
+            // user2
+            User user2 = new User("user2", passwordEncoder.encode("password"), "private".getBytes(), "public".getBytes());
+            userRepository.save(user2);
+
             // vault roles
             vaultRoleRepository.save(new VaultRole("CREATOR"));
+            vaultRoleRepository.save(new VaultRole("ADMIN"));
             vaultRoleRepository.save(new VaultRole("EDITOR"));
             vaultRoleRepository.save(new VaultRole("VIEWER"));
         };
