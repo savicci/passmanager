@@ -1,5 +1,15 @@
 {
-  "/": {
+  "/auth/register": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/auth/user": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/auth/logout": {
     "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"

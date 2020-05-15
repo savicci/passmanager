@@ -1,0 +1,15 @@
+<h3 class="mat-h3">{{data.text}}</h3>
+<form [formGroup]="passphraseForm" (ngSubmit)="onSubmit(passphraseForm.value)">
+  <mat-form-field>
+    <mat-label>Passphrase</mat-label>
+    <label for="passphrase"> </label>
+    <input matInput id="passphrase" type="password" formControlName="passphrase"/>
+  </mat-form-field>
+
+  <div *ngIf="errorMsg" class="error-box">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    {{errorMsg}}
+  </div>
+
+  <button mat-flat-button type="submit" color="primary">Decrypt keys</button>
+</form>

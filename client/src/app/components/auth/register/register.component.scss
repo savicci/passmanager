@@ -1,0 +1,39 @@
+.register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.register-form-field{
+  width: 40%;
+}
+
+.info-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: #673AB7;
+  padding: 8px 0;
+  margin-bottom: 8px;
+  border-radius:.5em;
+  border: 2px solid;
+}
+
+.error-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #D8000C;
+  background-color: #FFD2D2;
+  padding: 8px 0;
+  margin-bottom: 8px;
+  border-radius:.5em;
+  border: 2px solid;
+}
+
+.info-icon {
+  margin: 0 16px;
+}

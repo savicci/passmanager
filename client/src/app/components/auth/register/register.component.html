@@ -1,32 +1,45 @@
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
-  <div>
-    <label for="email">
-      Email
-    </label>
-    <input id="email" type="email" formControlName="email">
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)" class="register-form">
+  <div class="mat-display-3">Register to PassManager</div>
+
+  <mat-form-field appearance="outline" color="primary" class="register-form-field">
+    <mat-label>Email</mat-label>
+    <label for="email"></label>
+    <input matInput id="email" type="email" formControlName="email" required ngModel [email]="true"/>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="primary" class="register-form-field">
+    <mat-label>Password</mat-label>
+    <label for="password"></label>
+    <input matInput id="password" type="password" formControlName="password" required/>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="primary" class="register-form-field">
+    <mat-label>Enter password again</mat-label>
+    <label for="passwordReEnter"></label>
+    <input matInput id="passwordReEnter" type="password" formControlName="passwordReEnter" required
+           [errorStateMatcher]="matcher">
+    <mat-error *ngIf="registerForm.hasError('notSame')">Passwords does not match</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="primary" class="register-form-field">
+    <mat-label>Passphrase used for encryption</mat-label>
+    <label for="passphrase"></label>
+    <input matInput id="passphrase" [type]="hidePassphrase ? 'password' : 'text'" formControlName="passphrase" required>
+    <mat-icon matSuffix
+              (click)="hidePassphrase = !hidePassphrase">{{hidePassphrase ? 'visibility_off' : 'visibility'}}</mat-icon>
+  </mat-form-field>
+
+  <div class="info-box register-form-field">
+    <mat-icon class="info-icon">warning</mat-icon>
+    Please make sure to remember or write down your passphrase because we will not store it and won't help you if you
+    forget it
   </div>
 
-  <div>
-    <label for="password">
-      Password
-    </label>
-    <input id="password" type="password" formControlName="password">
+  <div *ngIf="errorMsg" class="error-box register-form-field">
+    <mat-icon class="info-icon">error_outline</mat-icon>
+    {{errorMsg}}
   </div>
 
-  <div>
-    <label for="passwordReEnter">
-      Enter password again
-    </label>
-    <input id="passwordReEnter" type="password" formControlName="passwordReEnter">
-  </div>
-
-  <div>
-    <label for="passphrase">
-      Passphrase used for encryption
-    </label>
-    <input id="passphrase" type="password" formControlName="passphrase">
-  </div>
-
-
-  <button class="button" type="submit">Register</button>
+  <button mat-flat-button color="primary" class="button" type="submit" [disabled]="!registerForm.valid">Register
+  </button>
 </form>

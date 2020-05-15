@@ -1,11 +1,7 @@
-<ul>
-  <li><a [routerLink]="['/login']">Login</a></li>
-  <li><a [routerLink]="['/logout']">Logout</a></li>
-  <li><a [routerLink]="['/register']">Register</a></li>
-  <li><a [routerLink]="['/']">Home</a></li>
-  <li><a [routerLink]="['/public']">Public</a></li>
-  <li><a [routerLink]="['/private']">Private</a></li>
-  <li><a [routerLink]="['/vault']">Vault</a></li>
-</ul>
-
+<div>
+  <app-auth-navbar *ngIf="isAuthenticated(); else unAuthenticated"></app-auth-navbar>
+  <ng-template #unAuthenticated>
+    <app-public-navbar></app-public-navbar>
+  </ng-template>
+</div>
 <router-outlet></router-outlet>

@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {catchError} from "rxjs/operators";
-import {of} from "rxjs";
 import {RsaEncryption} from "../encryption/RsaEncryption";
 import {AesEncryption} from "../encryption/AESEncryption";
 import {EncryptionService} from "../encryption/encryption.service";
@@ -13,38 +11,61 @@ export class AuthenticationService {
   }
 
   public async register(data: any) {
-    const body = await this.setUpRequestBody(data);
-
-    this.httpClient.post('/auth/register', body, {responseType: 'text'}).pipe(
-      catchError(err => {
-        console.error(err);
-        return of(err)
+    await this.setUpRequestBody(data)
+      .then(body => {
+        return this.httpClient.post('/auth/register', body, {responseType: 'text'}).toPromise()
       })
-    ).subscribe(response => console.log(response));
+      .catch(err => {
+        throw err;
+      })
   }
 
-  public login(data: any, passphrase: string) {
-    const httpHeaders = new HttpHeaders({Authorization: 'Basic ' + btoa(data.email + ':' + data.password)});
-
-    this.httpClient.get('auth/user', {headers: httpHeaders}).pipe(
-      catchError(err => {
-        console.error(err);
-        return of(err)
-      })
-    ).subscribe(response => this.encryptionService.importKeys(response, passphrase));
-  }
-
-  private async setUpRequestBody(data: any) {
+  async setUpRequestBody(data: any) {
     const keys = await RsaEncryption.generateRsaKeyPair();
     const aesKey = await AesEncryption.generateAesKey(data.passphrase);
     const iv = crypto.getRandomValues(new Uint8Array(12));
 
-    const exportedKeys = await RsaEncryption.exportKeys(keys, aesKey, iv);
-    return {
-      email: data.email,
-      password: data.password,
-      encryptedPrivateKey: exportedKeys.privateKey,
-      publicKey: exportedKeys.publicKey
-    }
+    return RsaEncryption.exportKeys(keys, aesKey, iv)
+      .then(exportedKeys => {
+        console.log('then authentication');
+        return {
+          email: data.email,
+          password: data.password,
+          encryptedPrivateKey: exportedKeys.privateKey,
+          publicKey: exportedKeys.publicKey
+        }
+      })
+      .catch(() => {
+        throw new Error('Could not export keys');
+      })
+  }
+
+  public async login(data: any) {
+    const httpHeaders = new HttpHeaders({Authorization: 'Basic ' + btoa(data.email + ':' + data.password)});
+    return this.httpClient.get('auth/user', {headers: httpHeaders, observe: 'response'}).toPromise()
+      .then(res => {
+        this.encryptionService.writeUserInfoToStorage(res.body);
+        localStorage.setItem('authenticated', 'true');
+      })
+      .catch((err) => {
+        localStorage.removeItem('authenticated');
+        throw new Error('Wrong email or password provided');
+      })
+  }
+
+  isAuthenticated() {
+    const item = localStorage.getItem('authenticated');
+    return item ? item === 'true' : false;
+  }
+
+  logout() {
+    return this.httpClient.get('/auth/logout', {responseType: 'text'}).toPromise()
+      .then(() => {
+          localStorage.removeItem('authenticated');
+        }
+      ).catch(() => {
+        localStorage.removeItem('authenticated');
+        throw new Error('Could not deauthenticate')
+      })
   }
 }

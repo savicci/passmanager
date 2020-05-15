@@ -115,6 +115,7 @@ public class VaultController {
         VaultRS vault = new VaultRS();
         vault.setVaultName(vaultUser.getVault().getVaultName());
         vault.setVaultData(new String(vaultUser.getVault().getVaultData()));
+        vault.setEncryptedVaultKey(new String(vaultUser.getVaultKey()));
         vault.setRole(vaultUser.getVaultRole().getRoleName());
         vault.setCreatedBy(vaultUser.getVault().getCreatedBy().getEmail());
         vault.setModifiedBy(vaultUser.getVault().getModifiedBy() == null ? null : vaultUser.getVault().getModifiedBy().getEmail());

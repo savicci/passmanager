@@ -1,19 +1,21 @@
-<form [formGroup]="loginForm" (ngSubmit)="authenticate(loginForm.value)">
-  <div>
-    <label for="email">Email</label>
-      <input id="email" type="text" formControlName="email"/>
+<form [formGroup]="loginForm" (ngSubmit)="authenticate(loginForm.value)" class="login-form">
+  <div class="mat-display-3">Log in to PassManager</div>
+  <mat-form-field appearance="outline" color="primary" class="login-form-field">
+    <mat-label>Email</mat-label>
+    <label for="email"></label>
+    <input matInput id="email" type="email" formControlName="email" required ngModel [email]="true"/>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="primary" class="login-form-field">
+    <mat-label>Password</mat-label>
+    <label for="password"></label>
+    <input matInput id="password" type="password" formControlName="password" required/>
+  </mat-form-field>
+
+  <div *ngIf="errorMsg" class="error-box login-form-field">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+   {{errorMsg}}
   </div>
 
-  <div>
-    <label for="password">Password</label>
-    <input id="password" type="password" formControlName="password"/>
-  </div>
-
-  <div>
-    <label for="passphrase">Passphrase</label>
-    <input id="passphrase" type="password" formControlName="passphrase"/>
-  </div>
-
-  <button type="submit">Authenticate me</button>
+  <button mat-flat-button type="submit" color="primary" [disabled]="!loginForm.valid">Log in</button>
 </form>
-

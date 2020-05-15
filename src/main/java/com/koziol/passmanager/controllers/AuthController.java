@@ -52,10 +52,10 @@ public class AuthController {
     }
 
     @GetMapping("/user")
-    public CustomUserDetails getUserInfo(Authentication authentication) {
+    public ResponseEntity<?> getUserInfo(Authentication authentication) {
         CustomUserDetails persistedUserDetails = userDetailsService.loadUserByUsername(authentication.getName());
         persistedUserDetails.setPassword(null);
-        return persistedUserDetails;
+        return ResponseEntity.ok(persistedUserDetails);
     }
 
     @GetMapping("/logout")

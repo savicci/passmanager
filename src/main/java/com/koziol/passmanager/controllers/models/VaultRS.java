@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class VaultRS {
     private String vaultName;
+    private String encryptedVaultKey;
     private String vaultData;
     private String createdBy;
     private String modifiedBy;
