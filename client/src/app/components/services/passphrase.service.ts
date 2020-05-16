@@ -23,10 +23,7 @@ export class PassphraseService {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog closed');
-      //set bool flag to session storage to see if keys were imported
-      //after closing window sessionStorage is deleted
-      //sessionStorage.setItem('passphraseProvided', 'true');
+      sessionStorage.setItem('passphraseProvided', 'true');
     })
   }
 }

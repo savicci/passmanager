@@ -6,24 +6,22 @@ export class VaultRow {
   updatedAt: Date;
   updatedBy: string;
 
-  constructor() {
-    this.name = '';
-    this.username = '';
-    this.password = '';
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
-    this.updatedBy = '';
-  }
 }
 
 export class Vault{
   vaultName: string;
   createdAt: Date;
+  createdBy: string;
+  modifiedDate: Date;
+  modifiedBy: string
   rows: VaultRow[];
 
-  constructor(vaultName: string) {
-    this.vaultName = vaultName;
+  constructor(name: string, userEmail: string) {
+    this.vaultName = name;
     this.createdAt = new Date();
-    this.rows = [];
+    this.modifiedDate = new Date();
+    this.createdBy = userEmail;
+    this.modifiedBy = userEmail;
+    this.rows = []
   }
 }

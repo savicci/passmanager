@@ -19,6 +19,7 @@ import {PublicNavbarComponent} from "./components/navbar/public-navbar/public-na
 import {AuthNavbarComponent} from "./components/navbar/auth-navbar/auth-navbar.component";
 import {RegistrationSnackBarComponent} from "./components/auth/register/registration-snack-bar/registration-snack-bar.component";
 import {PassphraseDialogComponent} from "./components/passphrase-dialog/passphrase-dialog.component";
+import {VaultSidenavComponent} from "./components/vaults/vault/vault-sidenav/vault-sidenav.component";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {PassphraseDialogComponent} from "./components/passphrase-dialog/passphra
     PublicNavbarComponent,
     AuthNavbarComponent,
     RegistrationSnackBarComponent,
-    PassphraseDialogComponent
+    PassphraseDialogComponent,
+    VaultSidenavComponent
   ],
   imports: [
     BrowserModule,

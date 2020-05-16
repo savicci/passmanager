@@ -1,7 +1,29 @@
-<p>vault works!</p>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav [(opened)]="sideNavOpened" mode="side" class="sidenav">
+    <app-vault-sidenav [sidenavRef]="sidenav"></app-vault-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div *ngIf="!sideNavOpened">
+      <button mat-flat-button color="primary" (click)="sideNavOpened = !sideNavOpened">
+        <mat-icon class="icon-display">format_list_bulleted</mat-icon>
+      </button>
+    </div>
+    <div class="vault-info">Vault information and operations(like find users, delete, synchronise, save</div>
 
-<button (click)="createNewVault()">Create new vault</button>
+    <div *ngIf="vaults.length === 0">
+      <form [formGroup]="vaultForm" (ngSubmit)="createNewVault(vaultForm.value)">
+        <h3 class="mat-h3">Start by creating your first vault</h3>
+        <mat-form-field>
+          <mat-label>Vault name</mat-label>
+          <label for="name"></label>
+          <input matInput id="name" formControlName="name" type="text" required>
+        </mat-form-field>
+        <button mat-flat-button type="submit" color="primary" [disabled]="!vaultForm.valid">Create</button>
+      </form>
+    </div>
 
-<div *ngFor="let item of vaults">
-  <app-vault-row [vaultRow]="item"></app-vault-row>
-</div>
+    <div *ngFor="let vault of vaults">
+      <app-vault-row [vaultRow]="vault"></app-vault-row>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

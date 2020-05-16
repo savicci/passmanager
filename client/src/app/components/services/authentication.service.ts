@@ -3,11 +3,12 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {RsaEncryption} from "../encryption/RsaEncryption";
 import {AesEncryption} from "../encryption/AESEncryption";
 import {EncryptionService} from "../encryption/encryption.service";
+import {Router} from "@angular/router";
 
 @Injectable()
 export class AuthenticationService {
 
-  constructor(private httpClient: HttpClient, private encryptionService: EncryptionService) {
+  constructor(private httpClient: HttpClient, private encryptionService: EncryptionService, private router: Router) {
   }
 
   public async register(data: any) {
@@ -40,6 +41,15 @@ export class AuthenticationService {
       })
   }
 
+  public getUserEmail(){
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if(userInfo === null){
+      sessionStorage.removeItem('passphraseProvided');
+      this.router.navigate(['/login']);
+    }
+    return userInfo.username;
+  }
+
   public async login(data: any) {
     const httpHeaders = new HttpHeaders({Authorization: 'Basic ' + btoa(data.email + ':' + data.password)});
     return this.httpClient.get('auth/user', {headers: httpHeaders, observe: 'response'}).toPromise()
@@ -62,9 +72,11 @@ export class AuthenticationService {
     return this.httpClient.get('/auth/logout', {responseType: 'text'}).toPromise()
       .then(() => {
           localStorage.removeItem('authenticated');
+          sessionStorage.removeItem('passphraseProvided');
         }
       ).catch(() => {
         localStorage.removeItem('authenticated');
+        sessionStorage.removeItem('passphraseProvided');
         throw new Error('Could not deauthenticate')
       })
   }

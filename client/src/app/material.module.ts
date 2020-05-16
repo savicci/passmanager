@@ -6,6 +6,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatDialogModule} from "@angular/material/dialog";
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 
 const material = [
@@ -15,7 +16,8 @@ const material = [
   MatFormFieldModule,
   MatInputModule,
   MatSnackBarModule,
-  MatDialogModule
+  MatDialogModule,
+  MatSidenavModule
 ];
 
 @NgModule({

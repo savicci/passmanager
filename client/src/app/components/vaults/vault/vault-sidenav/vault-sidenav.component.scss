@@ -1,0 +1,9 @@
+.sidenav-options {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px;
+}
+
+.sidenav-options > mat-icon {
+  transform: scale(2);
+}

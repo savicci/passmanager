@@ -1,0 +1,21 @@
+mat-sidenav-container {
+  height: calc(100% - 64px);
+}
+
+.sidenav {
+  background-color: lightcoral;
+  width: 250px;
+}
+
+mat-sidenav-content {
+  padding: 16px;
+}
+
+.vault-info {
+  padding: 16px;
+}
+
+.icon-display {
+  transform: scale(2);
+  padding: 12px 8px;
+}

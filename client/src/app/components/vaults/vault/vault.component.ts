@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {VaultService} from "./vault.service";
 import {Vault} from "./models";
 import {PassphraseService} from "../../services/passphrase.service";
+import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-vault',
@@ -11,17 +12,24 @@ import {PassphraseService} from "../../services/passphrase.service";
 export class VaultComponent implements OnInit {
 
   vaults: Vault[];
+  sideNavOpened: boolean = false;
+  vaultForm: any;
 
-  constructor(private vaultService: VaultService, private passphraseService: PassphraseService) { }
+  constructor(private vaultService: VaultService, private passphraseService: PassphraseService, private formBuilder: FormBuilder) {
+    this.vaultForm = this.formBuilder.group({
+      name: '',
+    })
+  }
 
   ngOnInit(): void {
     this.vaults = [];
-    if(this.passphraseService.isPassphraseRequestNeeded()){
+    if (this.passphraseService.isPassphraseRequestNeeded()) {
       this.passphraseService.requestPassphrase('Please enter passphrase for decryption of keys');
     }
   }
 
-  async createNewVault() {
-    await this.vaultService.createNewVault('thevault');
+  createNewVault(value: any) {
+    console.log('creating vault');
+    this.vaultService.createNewVault(value.name);
   }
 }
