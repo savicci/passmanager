@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AesEncryption} from "../encryption/AESEncryption";
 import {ErrorHandlingService} from "./error-handling.service";
+import {EncodingService} from "./encoding.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class AesEncryptionService {
   private encoder = new TextEncoder();
   private decoder = new TextDecoder();
 
-  constructor(private errorHandler: ErrorHandlingService) {
+  constructor(private errorHandler: ErrorHandlingService, private encoding: EncodingService) {
   }
 
 
@@ -27,14 +28,15 @@ export class AesEncryptionService {
     console.log('iv', iv);
     return AesEncryption.encryptData(this.encoder.encode(uint8Array), key, iv)
       .then((res: ArrayBuffer) => {
-        return this.concatBuffers(res, iv.buffer);
+        return this.encoding.convertArrayBufferToString(this.concatBuffers(res, iv.buffer));
       })
       .catch(err => {
         throw this.errorHandler.handleEncryptionError('Error during aes encryption', err)
       });
   }
 
-  decryptData(uint8Array: Uint8Array, key: CryptoKey) {
+  decryptData(str: string, key: CryptoKey) {
+    const uint8Array = new Uint8Array(this.encoding.convertStringToArrayBuffer(str));
     console.log('decrypting');
     const buffer = uint8Array.buffer;
     const iv = buffer.slice(buffer.byteLength - 12);
