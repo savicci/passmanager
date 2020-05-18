@@ -9,21 +9,13 @@ export class PassphraseService {
 
   constructor(private dialog: MatDialog) { }
 
-  public isPassphraseRequestNeeded(){
-    return sessionStorage.getItem('passphraseProvided') !== 'true';
-  }
-
   public requestPassphrase(promptText: string){
-    const dialogRef = this.dialog.open(PassphraseDialogComponent, {
+    return this.dialog.open(PassphraseDialogComponent, {
       width: '300px',
       disableClose: true,
       data: {
         text: promptText
       }
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      sessionStorage.setItem('passphraseProvided', 'true');
-    })
   }
 }

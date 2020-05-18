@@ -9,7 +9,6 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { PrivateComponent } from './components/private/private.component';
 import { LogoutComponent } from './components/auth/logout/logout.component';
 import { VaultComponent } from './components/vaults/vault/vault.component';
 import { VaultRowComponent } from './components/vaults/vault/vault-row/vault-row.component';
@@ -27,7 +26,6 @@ import {VaultSidenavComponent} from "./components/vaults/vault/vault-sidenav/vau
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    PrivateComponent,
     LogoutComponent,
     VaultComponent,
     VaultRowComponent,

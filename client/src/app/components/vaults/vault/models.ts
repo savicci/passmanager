@@ -9,12 +9,15 @@ export class VaultRow {
 }
 
 export class Vault{
+  key: string
+  id: number;
   vaultName: string;
   createdAt: Date;
   createdBy: string;
   modifiedDate: Date;
   modifiedBy: string
   rows: VaultRow[];
+  role: string
 
   constructor(name: string, userEmail: string) {
     this.vaultName = name;

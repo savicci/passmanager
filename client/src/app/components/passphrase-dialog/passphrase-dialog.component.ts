@@ -28,7 +28,6 @@ export class PassphraseDialogComponent implements OnInit {
     this.encryption.decryptKeys(value.passphrase)
       .then(res => {
         this.errorMsg = '';
-        sessionStorage.setItem('passphraseProvided', 'true');
         this.dialogRef.close();
       })
       .catch(err => {

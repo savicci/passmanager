@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PassphraseService } from './passphrase.service';
+import { AesEncryptionService } from './aes-encryption.service';
 
-describe('PassphraseService', () => {
-  let service: PassphraseService;
+describe('AesEncryptionService', () => {
+  let service: AesEncryptionService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PassphraseService);
+    service = TestBed.inject(AesEncryptionService);
   });
 
   it('should be created', () => {

@@ -29,8 +29,19 @@ export class EncryptionService {
       .then(res => res)
       .catch(err => {
         console.log(err);
-        return err;
+        throw err;
       });
+  }
+
+  privateDecrypt(data: string){
+    return RsaEncryption.privateDecrypt(new TextEncoder().encode(data), this.keys.privateKey)
+      .then(res => {
+       return res;
+      })
+      .catch(err => {
+        console.warn(err);
+        throw err;
+      })
   }
 
   writeUserInfoToStorage(body) {
