@@ -23,9 +23,7 @@ export class AesEncryptionService {
   }
 
   encryptData(uint8Array: string, key: CryptoKey) {
-    console.log('encrypting')
     const iv = crypto.getRandomValues(new Uint8Array(12));
-    console.log('iv', iv);
     return AesEncryption.encryptData(this.encoder.encode(uint8Array), key, iv)
       .then((res: ArrayBuffer) => {
         return this.encoding.convertArrayBufferToString(this.concatBuffers(res, iv.buffer));
@@ -37,14 +35,12 @@ export class AesEncryptionService {
 
   decryptData(str: string, key: CryptoKey) {
     const uint8Array = new Uint8Array(this.encoding.convertStringToArrayBuffer(str));
-    console.log('decrypting');
     const buffer = uint8Array.buffer;
     const iv = buffer.slice(buffer.byteLength - 12);
-    console.log('iv', new Uint8Array(iv));
     const data = buffer.slice(0, buffer.byteLength - 12);
     return AesEncryption.decryptData(new Uint8Array(data), key, new Uint8Array(iv))
       .then(res => {
-        return res;
+        return this.encoding.convertArrayBufferToString(res);
       })
       .catch(err => {
         throw this.errorHandler.handleEncryptionError('Error during aes decryption', err)
