@@ -23,10 +23,24 @@ describe('AesEncryptionService', () => {
     const dataToTest = 'fafjhjnklb230909[v;na209jf-0v-z01no90fv-0-905423';
 
     const encrypted = await service.encryptData(dataToTest, key);
+    console.log(new Uint8Array(encrypted));
 
-    const decrypted = await service.decryptData(new Uint8Array(encrypted), key);
+    const str = String.fromCharCode.apply(null, new Uint8Array(encrypted));
+    const ab = str2ab(str);
+    console.log(new Uint8Array(ab));
+
+    const decrypted = await service.decryptData(new Uint8Array(ab), key);
 
     console.log('result');
     expect(new TextDecoder().decode(decrypted)).toEqual(dataToTest)
   });
+
+  function str2ab(str) {
+    var buf = new ArrayBuffer(str.length); // 2 bytes for each char
+    var bufView = new Uint8Array(buf);
+    for (var i=0, strLen=str.length; i<strLen; i++) {
+      bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+  }
 });
