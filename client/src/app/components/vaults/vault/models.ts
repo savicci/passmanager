@@ -5,12 +5,11 @@ export class VaultRow {
   createdAt: Date;
   updatedAt: Date;
   updatedBy: string;
-
 }
 
 export class Vault{
   key: string
-  id: number;
+  id: string;
   vaultName: string;
   createdAt: Date;
   createdBy: string;
@@ -22,9 +21,10 @@ export class Vault{
   constructor(name: string, userEmail: string) {
     this.vaultName = name;
     this.createdAt = new Date();
-    this.modifiedDate = new Date();
     this.createdBy = userEmail;
-    this.modifiedBy = userEmail;
     this.rows = []
+    this.role = 'CREATOR';
+    this.modifiedDate = null;
+    this.modifiedBy = null;
   }
 }

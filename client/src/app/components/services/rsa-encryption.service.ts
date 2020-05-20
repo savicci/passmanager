@@ -5,56 +5,47 @@ import {AesEncryption} from "../encryption/AESEncryption";
 import {RsaEncryption} from "../encryption/RsaEncryption";
 import {ErrorHandlingService} from "./error-handling.service";
 import {UserService} from "./user.service";
+import {EncodingService} from "./encoding.service";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class RsaEncryptionService {
-  private encoderToUint8Array = new TextEncoder();
-
   private keys: CryptoKeyPair;
   private iv: Uint8Array;
 
   constructor(private httpClient: HttpClient,
               private router: Router,
               private errorHandler: ErrorHandlingService,
-              private userService: UserService) {
+              private userService: UserService,
+              private encoding: EncodingService) {
   }
 
-  decryptKeys(passphrase: any) {
+  public decryptKeys(passphrase: any) {
     return this.importRsaKeys(this.userService.getUserInfo(), passphrase);
   }
 
-  publicEncrypt(data: string) {
-    return RsaEncryption.publicEncrypt(this.encoderToUint8Array.encode(data), this.keys.publicKey)
-      .then(res => res)
+  public publicEncrypt(data: string): Promise<any> {
+    return RsaEncryption.publicEncrypt(this.encoding.convertStringToArrayBuffer(data), this.keys.publicKey)
+      .then(res => this.encoding.convertArrayBufferToString(res))
       .catch(err => {
         throw this.errorHandler.handleEncryptionError('Error during public encryption', err)
       });
   }
 
-  privateDecrypt(data: string) {
-    return RsaEncryption.privateDecrypt(this.encoderToUint8Array.encode(data), this.keys.privateKey)
-      .then(res => res)
+  public privateDecrypt(data: string): Promise<any> {
+    return RsaEncryption.privateDecrypt(this.encoding.convertStringToArrayBuffer(data), this.keys.privateKey)
+      .then(res => this.encoding.convertArrayBufferToString(res))
       .catch(err => {
         throw this.errorHandler.handleEncryptionError('Error during private decryption', err)
       });
   }
 
-  private importRsaKeys(response: any, passphrase: string): Promise<any> {
-    return AesEncryption.generateAesKey(passphrase)
-      .then(aesKey => {
-        RsaEncryption.importKeys({publicKey: response.publicKey, privateKey: response.encryptedPrivateKey}, aesKey)
-          .then(res => {
-            this.keys = res.keyPair;
-            this.iv = res.iv;
-          })
-          .catch(err => {
-            throw this.errorHandler.handleEncryptionError('Error during keyPair import', err)
-          })
-      })
-      .catch(err => {
-        throw this.errorHandler.handleEncryptionError('Error during key generation', err)
-      })
+  private async importRsaKeys(response: any, passphrase: string) {
+    const aesKey = await AesEncryption.generateAesKey(passphrase);
+    const imported = await RsaEncryption.importKeys({
+      publicKey: response.publicKey,
+      privateKey: response.encryptedPrivateKey
+    }, aesKey);
+    this.keys = imported.keyPair;
+    this.iv = imported.iv;
   }
 }

@@ -11,7 +11,7 @@ export class UserService {
   constructor(private httpClient: HttpClient, private errorHandler: ErrorHandlingService) { }
 
   refreshUserInfo() {
-    return this.httpClient.get('/auth/userInfo', {observe: 'response'}).toPromise()
+    return this.httpClient.get('/auth/user', {observe: 'response'}).toPromise()
       .then(res => {
         sessionStorage.setItem('userInfo', JSON.stringify(res.body));
       })
@@ -21,13 +21,13 @@ export class UserService {
   }
 
   getUserInfo() {
-    const infoString = sessionStorage.getItem('userInfo');
+    const infoString = localStorage.getItem('userInfo');
     if(infoString !== null){
       return JSON.parse(infoString);
     }
     this.refreshUserInfo()
       .then(() => {
-        return JSON.parse(sessionStorage.getItem('userInfo'));
+        return JSON.parse(localStorage.getItem('userInfo'));
       })
   }
 }

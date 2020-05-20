@@ -20,7 +20,7 @@ export class RsaEncryption {
     );
   }
 
-  static async publicEncrypt(data: Uint8Array, publicKey: CryptoKey): Promise<ArrayBuffer> {
+  static async publicEncrypt(data: ArrayBuffer, publicKey: CryptoKey): Promise<ArrayBuffer> {
     return window.crypto.subtle.encrypt(
       {
         name: "RSA-OAEP"

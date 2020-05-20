@@ -58,7 +58,7 @@ public class TestDataInjector {
             vault.setVaultName("testName");
             vault.setCreatedBy(user);
             vault.setCreatedDate(LocalDateTime.now());
-            vaultRepository.save(vault);
+//            vaultRepository.save(vault);
 
             VaultRole creatorRole = vaultRoleRepository.save(new VaultRole("CREATOR"));
 
@@ -69,7 +69,7 @@ public class TestDataInjector {
             vaultUser.setVaultRole(creatorRole);
             vaultUser.setVaultKey(encryptedVaultKey.getBytes());
             vaultUser.setVault(vault);
-            vaultUserRepository.save(vaultUser);
+//            vaultUserRepository.save(vaultUser);
 
             // vault roles
             vaultRoleRepository.save(new VaultRole("ADMIN"));

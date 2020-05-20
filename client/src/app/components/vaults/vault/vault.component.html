@@ -10,7 +10,7 @@
     </div>
     <div class="vault-info">Vault information and operations(like find users, delete, synchronise, save</div>
 
-    <div *ngIf="vaults.length === 0">
+    <div *ngIf="vaults && vaults.length === 0">
       <form [formGroup]="vaultForm" (ngSubmit)="createNewVault(vaultForm.value)">
         <h3 class="mat-h3">Start by creating your first vault</h3>
         <mat-form-field>
@@ -23,7 +23,13 @@
     </div>
 
     <div *ngFor="let vault of vaults">
-      <app-vault-row [vaultRow]="vault"></app-vault-row>
+      {{vault.data.vaultName}}
+      {{vault.data.createdAt}}
+      {{vault.data.modifiedDate}}
     </div>
+
+    <button mat-flat-button (click)="createNewVault({name: 'new vault'})" color="primary">Click to create new vault</button>
+    <button mat-flat-button (click)="modifyVault()" color="accent">Click to modify vault date</button>
+    <button mat-flat-button (click)="deleteVault()" color="warn">Click to delete vault</button>
   </mat-sidenav-content>
 </mat-sidenav-container>

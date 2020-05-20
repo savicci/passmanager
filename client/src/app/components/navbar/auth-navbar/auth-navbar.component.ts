@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../../services/authentication.service";
 import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-auth-navbar',
@@ -9,9 +11,12 @@ import {Router} from "@angular/router";
 })
 export class AuthNavbarComponent implements OnInit {
 
-  constructor(private authentication: AuthenticationService, private router: Router) { }
+  constructor(private authentication: AuthenticationService, private router: Router, private userService: UserService) { }
 
   ngOnInit(): void {
+    setInterval(() => {
+      this.userService.refreshUserInfo();
+    }, 15000);
   }
 
   logOutUser() {

@@ -31,7 +31,7 @@ create table vault_user
     VAULT_ID      INT      NOT NULL,
     USER_ID       INT      NOT NULL,
     VAULT_ROLE_ID INT      NOT NULL,
-    VAULT_KEY     TEXT     NOT NULL,
+    VAULT_KEY     BLOB     NOT NULL,
     CREATED_BY    INT      NOT NULL,
     CREATED_DATE  DATETIME NOT NULL,
     MODIFIED_BY   INT NULL,

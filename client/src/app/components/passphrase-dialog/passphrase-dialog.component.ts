@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {EncryptionService} from "../encryption/encryption.service";
+import {RsaEncryptionService} from "../services/rsa-encryption.service";
 
 @Component({
   selector: 'app-passphrase-dialog',
@@ -13,7 +13,7 @@ export class PassphraseDialogComponent implements OnInit {
   errorMsg: string;
 
   constructor(private formBuilder: FormBuilder,
-              private encryption: EncryptionService,
+              private encryption: RsaEncryptionService,
               public dialogRef: MatDialogRef<PassphraseDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: { text: string }) {
     this.passphraseForm = this.formBuilder.group({

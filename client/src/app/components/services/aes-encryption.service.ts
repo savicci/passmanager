@@ -22,9 +22,9 @@ export class AesEncryptionService {
       });
   }
 
-  encryptData(uint8Array: string, key: CryptoKey) {
+  encryptData(data: string, key: CryptoKey) {
     const iv = crypto.getRandomValues(new Uint8Array(12));
-    return AesEncryption.encryptData(this.encoder.encode(uint8Array), key, iv)
+    return AesEncryption.encryptData(this.encoder.encode(data), key, iv)
       .then((res: ArrayBuffer) => {
         return this.encoding.convertArrayBufferToString(this.concatBuffers(res, iv.buffer));
       })
