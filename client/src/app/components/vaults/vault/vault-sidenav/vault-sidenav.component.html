@@ -10,7 +10,7 @@
   </button>
 </div>
   <div *ngFor="let vault of vaults" class="vault-row">
-      <button mat-button color="primary" class="vault-row-button">
-        <mat-icon color="primary" class="vault-row-icon">folder</mat-icon>{{vault.data.vaultName}}
+      <button mat-button color="primary" class="vault-row-button" routerLink="/vault/{{vault.id}}">
+        <mat-icon color="primary" class="vault-row-icon">{{getIconType(vault.id)}}</mat-icon>{{vault.data.vaultName}}
       </button>
 </div>

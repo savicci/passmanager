@@ -10,7 +10,8 @@ const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: 'full'},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'vault', component: VaultComponent},
+  {path: 'vault', redirectTo: 'vault/', pathMatch: 'full'},
+  {path: 'vault/:id', component: VaultComponent},
   {path: '**', redirectTo: ''}
 ];
 
