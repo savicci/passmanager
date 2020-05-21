@@ -4,6 +4,9 @@ import {FormBuilder} from "@angular/forms";
 import {VaultService} from "./services/vault.service";
 import {RsaEncryptionService} from "../../services/rsa-encryption.service";
 import {EncodingService} from "../../services/encoding.service";
+import {MatDialog} from "@angular/material/dialog";
+import {CreateVaultComponent} from "./create-vault/create-vault.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-vault',
@@ -16,7 +19,13 @@ export class VaultComponent implements OnInit {
   sideNavOpened: boolean = false;
   vaultForm: any;
 
-  constructor(private passphraseService: PassphraseService, private formBuilder: FormBuilder, private vaultService: VaultService, private rsaEncryption: RsaEncryptionService, private encoding: EncodingService) {
+  constructor(private passphraseService: PassphraseService,
+              private formBuilder: FormBuilder,
+              private vaultService: VaultService,
+              private dialog: MatDialog,
+              private router: Router,
+              private route: ActivatedRoute
+              ) {
     this.vaultForm = this.formBuilder.group({
       name: '',
     })
@@ -59,5 +68,27 @@ export class VaultComponent implements OnInit {
       .then(vaults => {
         this.vaults = vaults;
       })
+  }
+
+  openVaultCreationDialog() {
+    let newVaultRef = this.dialog.open(CreateVaultComponent, {
+      width: '400px',
+      disableClose: false,
+    });
+
+    newVaultRef.afterClosed().toPromise()
+      .then(() => this.refreshVaults())
+  }
+
+  isMainPageOpened() {
+    this.sideNavOpened = true;
+    return this.router.url === '/vault/';
+  }
+
+  selectedVault() {
+    const id = this.route.snapshot.params['id'];
+    return this.vaults.find(vault => {
+      return id === vault.id;
+    })
   }
 }

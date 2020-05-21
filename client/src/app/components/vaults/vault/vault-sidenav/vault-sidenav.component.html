@@ -1,16 +1,22 @@
 <div class="sidenav-options">
-  <button mat-button color="primary">
+  <button mat-button color="primary" routerLink="/vault">
     <h3 class="mat-h3 vault-text">Vaults</h3>
   </button>
-  <button mat-button color="primary" (click)="refresh()">
+  <button mat-button color="primary" (click)="this.refreshEmitter.emit(true)">
     <mat-icon color="primary" class="material-icons-outlined">refresh</mat-icon>
   </button>
   <button mat-button color="primary" (click)="sidenavRef.close()">
     <mat-icon color="primary" class="material-icons-outlined">clear</mat-icon>
   </button>
 </div>
-  <div *ngFor="let vault of vaults" class="vault-row">
-      <button mat-button color="primary" class="vault-row-button" routerLink="/vault/{{vault.id}}">
-        <mat-icon color="primary" class="vault-row-icon">{{getIconType(vault.id)}}</mat-icon>{{vault.data.vaultName}}
-      </button>
+<div *ngFor="let vault of vaults" class="vault-row">
+  <button mat-button color="primary" class="vault-row-button" routerLink="/vault/{{vault.id}}">
+    <mat-icon color="primary" class="vault-row-icon">{{getIconType(vault.id)}}</mat-icon>
+    {{vault.data.vaultName}}
+  </button>
+</div>
+<div class="add-vault">
+  <button mat-button class="vault-row" (click)="this.newVaultEmitter.emit(true)">
+    <mat-icon color="primary">add</mat-icon>
+  </button>
 </div>

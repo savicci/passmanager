@@ -7,13 +7,10 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./vault-sidenav.component.scss']
 })
 export class VaultSidenavComponent implements OnInit {
-
-  @Input()
-  sidenavRef;
-  @Input()
-  vaults;
-  @Output()
-  refreshEmitter = new EventEmitter();
+  @Input() sidenavRef;
+  @Input() vaults;
+  @Output() refreshEmitter = new EventEmitter();
+  @Output() newVaultEmitter = new EventEmitter();
   private id: string;
 
   constructor(private route: ActivatedRoute) {
@@ -22,12 +19,9 @@ export class VaultSidenavComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  refresh() {
-    this.refreshEmitter.emit(true);
-  }
-
   getIconType(id: string) {
     this.id = this.route.snapshot.params['id'];
     return this.id === id ? 'folder_open' : 'folder';
   }
+
 }

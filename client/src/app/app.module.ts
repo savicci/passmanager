@@ -19,6 +19,8 @@ import {AuthNavbarComponent} from "./components/navbar/auth-navbar/auth-navbar.c
 import {RegistrationSnackBarComponent} from "./components/auth/register/registration-snack-bar/registration-snack-bar.component";
 import {PassphraseDialogComponent} from "./components/passphrase-dialog/passphrase-dialog.component";
 import {VaultSidenavComponent} from "./components/vaults/vault/vault-sidenav/vault-sidenav.component";
+import {CreateVaultComponent} from "./components/vaults/vault/create-vault/create-vault.component";
+import {VaultContentComponent} from "./components/vaults/vault/vault-content/vault-content.component";
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import {VaultSidenavComponent} from "./components/vaults/vault/vault-sidenav/vau
     AuthNavbarComponent,
     RegistrationSnackBarComponent,
     PassphraseDialogComponent,
-    VaultSidenavComponent
+    VaultSidenavComponent,
+    CreateVaultComponent,
+    VaultContentComponent
   ],
   imports: [
     BrowserModule,

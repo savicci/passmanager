@@ -15,7 +15,7 @@
 }
 
 .vault-row {
-  padding: 0 12px;
+  width: 100%;
 }
 
 .vault-row-button {
@@ -26,4 +26,15 @@
 
 .vault-row-icon {
   margin-right: 8px;
+}
+
+.add-vault{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.add-vault > mat-icon {
+  transform: scale(2);
+  width: 100%;
 }

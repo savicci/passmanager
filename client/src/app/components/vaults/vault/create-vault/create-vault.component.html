@@ -1,0 +1,17 @@
+<h4 class="mat-h4">Create new vault</h4>
+<div class="dialog-form">
+<form [formGroup]="vaultForm" (ngSubmit)="createVault(vaultForm.value)">
+  <mat-form-field>
+    <mat-label>Vault name</mat-label>
+    <label for="name"> </label>
+    <input matInput id="name" type="text" formControlName="name"/>
+  </mat-form-field>
+
+  <div *ngIf="errorMsg" class="error-box">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    {{errorMsg}}
+  </div>
+
+  <button mat-flat-button type="submit" color="primary">Create vault</button>
+</form>
+</div>
