@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-vault-sidenav',
@@ -10,9 +10,18 @@ export class VaultSidenavComponent implements OnInit {
   @Input()
   sidenavRef;
 
+  @Input()
+  vaults;
+
+  @Output()
+  refreshEmitter = new EventEmitter();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  refresh() {
+    this.refreshEmitter.emit(true);
+  }
 }

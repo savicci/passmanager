@@ -1,8 +1,16 @@
 <div class="sidenav-options">
+  <button mat-button color="primary">
+    <h3 class="mat-h3 vault-text">Vaults</h3>
+  </button>
+  <button mat-button color="primary" (click)="refresh()">
+    <mat-icon color="primary" class="material-icons-outlined">refresh</mat-icon>
+  </button>
   <button mat-button color="primary" (click)="sidenavRef.close()">
-  <mat-icon color="primary" class="material-icons-outlined">clear</mat-icon>
+    <mat-icon color="primary" class="material-icons-outlined">clear</mat-icon>
   </button>
 </div>
-<div>
-  div as a container for all vaults
+  <div *ngFor="let vault of vaults" class="vault-row">
+      <button mat-button color="primary" class="vault-row-button">
+        <mat-icon color="primary" class="vault-row-icon">folder</mat-icon>{{vault.data.vaultName}}
+      </button>
 </div>

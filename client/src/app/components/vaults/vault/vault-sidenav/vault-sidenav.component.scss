@@ -1,9 +1,29 @@
 .sidenav-options {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 12px;
 }
 
 .sidenav-options > mat-icon {
   transform: scale(2);
+}
+
+.vault-text {
+  text-align: center;
+  margin: auto;
+  color: #673ab7;
+}
+
+.vault-row {
+  padding: 0 12px;
+}
+
+.vault-row-button {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.vault-row-icon {
+  margin-right: 8px;
 }

@@ -54,7 +54,7 @@ export class VaultComponent implements OnInit {
       })
   }
 
-  private refreshVaults() {
+  refreshVaults() {
     this.vaultService.getAllVaults()
       .then(vaults => {
         this.vaults = vaults;
