@@ -5,7 +5,7 @@ import {VaultService} from "./services/vault.service";
 import {RsaEncryptionService} from "../../services/rsa-encryption.service";
 import {EncodingService} from "../../services/encoding.service";
 import {MatDialog} from "@angular/material/dialog";
-import {CreateVaultComponent} from "./create-vault/create-vault.component";
+import {CreateVaultComponent} from "./dialogs/create-vault/create-vault.component";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
@@ -16,7 +16,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class VaultComponent implements OnInit {
 
   vaults = undefined;
-  sideNavOpened: boolean = false;
+  sideNavOpened: boolean = true;
   vaultForm: any;
 
   constructor(private passphraseService: PassphraseService,
@@ -81,7 +81,6 @@ export class VaultComponent implements OnInit {
   }
 
   isMainPageOpened() {
-    this.sideNavOpened = true;
     return this.router.url === '/vault/';
   }
 
@@ -90,5 +89,14 @@ export class VaultComponent implements OnInit {
     return this.vaults.find(vault => {
       return id === vault.id;
     })
+  }
+
+  changeSidenavVisibility() {
+    this.sideNavOpened = !this.sideNavOpened;
+  }
+
+  handleRefreshAction() {
+    this.router.navigate(['/vault']);
+    this.refreshVaults()
   }
 }

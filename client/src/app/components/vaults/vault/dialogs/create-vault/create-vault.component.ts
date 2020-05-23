@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
-import {VaultService} from "../services/vault.service";
+import {VaultService} from "../../services/vault.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialogRef} from "@angular/material/dialog";
 

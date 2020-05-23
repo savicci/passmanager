@@ -22,8 +22,7 @@ export class VaultService {
   }
 
   public async createNewVault(name: string) {
-    const userInfo = this.userService.getUserInfo();
-    let newVault = new Vault(name, userInfo.username);
+    let newVault = new Vault(name);
     const aesKeyPassphrase = this.aesEncryption.getRandom32ByteString()
 
     this.aesEncryption.generateAesKey(aesKeyPassphrase)
@@ -42,8 +41,6 @@ export class VaultService {
   }
 
   public getAllVaults() {
-    const userInfo = this.userService.getUserInfo();
-
     return this.vaultApi.getAllVaults()
       .then((res: HttpResponse<any>) => {
         return this.parser.parseJsonToVaults(res.body.vaults);

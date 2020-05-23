@@ -1,14 +1,14 @@
 <mat-sidenav-container>
-  <mat-sidenav #sidenav [(opened)]="sideNavOpened" mode="side" class="sidenav">
-    <app-vault-sidenav [sidenavRef]="sidenav"
-                       [vaults]="vaults"
-                       (refreshEmitter)="refreshVaults()"
-                       (newVaultEmitter)="openVaultCreationDialog()">
+  <mat-sidenav [(opened)]="sideNavOpened" mode="side" class="sidenav">
+    <app-vault-sidenav [vaults]="vaults"
+                       (refreshEmitter)="handleRefreshAction()"
+                       (newVaultEmitter)="openVaultCreationDialog()"
+                       (closeSidenavEmitter)="changeSidenavVisibility()">
     </app-vault-sidenav>
   </mat-sidenav>
   <mat-sidenav-content>
     <div *ngIf="!sideNavOpened">
-      <button mat-button color="primary" class="menu-button" (click)="sideNavOpened = !sideNavOpened">
+      <button mat-button color="primary" class="menu-button" (click)="changeSidenavVisibility()">
         <mat-icon class="icon-display">list</mat-icon>
       </button>
     </div>

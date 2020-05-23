@@ -18,7 +18,6 @@ export class ParserService {
       let promise = new Promise((resolve, reject) => {
         this.rsaEncryption.privateDecrypt(value['encryptedVaultKey'])
           .then(vaultPassphrase => {
-
             this.aesEncryption.generateAesKey(vaultPassphrase)
               .then(aesKey => {
                 this.aesEncryption.decryptData(value['vaultData'], aesKey)
@@ -58,7 +57,7 @@ export class ParserService {
       data: JSON.parse(decryptedVault),
       role: value['role'],
       modifiedBy: value['modifiedBy'],
-      modifiedDate: new Date(value['modifiedDate']),
+      modifiedDate: value['modifiedDate'] === null ? null : new Date(value['modifiedDate']),
       createdBy: value['createdBy'],
       createdDate: new Date(value['createdDate'])
     }

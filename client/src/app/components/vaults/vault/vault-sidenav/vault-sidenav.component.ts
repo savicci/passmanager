@@ -7,10 +7,10 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./vault-sidenav.component.scss']
 })
 export class VaultSidenavComponent implements OnInit {
-  @Input() sidenavRef;
   @Input() vaults;
   @Output() refreshEmitter = new EventEmitter();
   @Output() newVaultEmitter = new EventEmitter();
+  @Output() closeSidenavEmitter = new EventEmitter();
   private id: string;
 
   constructor(private route: ActivatedRoute) {

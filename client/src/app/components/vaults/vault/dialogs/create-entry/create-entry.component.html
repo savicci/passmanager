@@ -1,0 +1,21 @@
+<h4 class="mat-h4">Create new entry</h4>
+<div>
+  <form [formGroup]="entryForm" (ngSubmit)="createEntry(entryForm.value)" class="dialog-form">
+    <mat-form-field>
+      <mat-label>Entry name</mat-label>
+      <label for="name"> </label>
+      <input matInput id="name" type="text" formControlName="name"/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <label for="username"> </label>
+      <input matInput id="username" type="text" formControlName="username"/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <label for="password"> </label>
+      <input matInput id="password" type="password" formControlName="password"/>
+    </mat-form-field>
+    <button mat-flat-button type="submit" color="primary">Create Entry</button>
+  </form>
+</div>

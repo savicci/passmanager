@@ -1,12 +1,4 @@
-<div id="vault-info">
-  <h3 class="mat-h3">{{vaultContent.data['vaultName']}}</h3>
-  <h3 class="mat-h3">{{vaultContent.data}}</h3>
-</div>
 <div id="vault-options">
-  <button mat-button class="vault-option option-button">
-    <mat-icon>person_add</mat-icon>
-    Add user
-  </button>
   <button mat-button class="vault-option option-button">
     <mat-icon>people</mat-icon>
     Users
@@ -23,5 +15,19 @@
     <mat-icon>help</mat-icon>
     Help
   </button>
+  <button mat-button class="vault-option option-button">
+    <mat-icon>info</mat-icon>
+    Info
+  </button>
 </div>
-<!-- add user, users, save, delete, help -->
+<div class="entry-button">
+<button mat-flat-button color="primary" (click)="createNewEntry()">
+  <mat-icon>add</mat-icon>
+  Create new entry
+</button>
+</div>
+<div id="vault-content">
+  <div *ngFor="let row of vaultContent.data.rows" class="content-row">
+    <app-vault-row [vaultRow]="row"></app-vault-row>
+  </div>
+</div>
