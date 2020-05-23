@@ -1,4 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
+import {VaultResponse} from "../models";
 
 @Component({
   selector: 'app-vault-content',
@@ -7,11 +9,15 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class VaultContentComponent implements OnInit {
   @Input()
-  vaultContent: any;
+  vaultContent: VaultResponse;
 
-  constructor() { }
+  constructor(private router: Router) {
+  }
 
   ngOnInit(): void {
+    if(this.vaultContent === undefined){
+      this.router.navigate(['/vault']);
+    }
   }
 
 }

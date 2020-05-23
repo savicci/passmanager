@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Vault} from "../models";
+import {Vault, VaultResponse} from "../models";
 import {RsaEncryptionService} from "../../../services/rsa-encryption.service";
 import {AesEncryptionService} from "../../../services/aes-encryption.service";
 import {EncodingService} from "../../../services/encoding.service";
@@ -23,7 +23,7 @@ export class ParserService {
               .then(aesKey => {
                 this.aesEncryption.decryptData(value['vaultData'], aesKey)
                   .then(decryptedVault => {
-                    vaults.push({id: id, key: vaultPassphrase, data: JSON.parse(decryptedVault)});
+                    vaults.push(this.createVaultResponse(id, value, vaultPassphrase, decryptedVault));
                     return resolve;
                   })
                   .catch(err => {
@@ -50,5 +50,17 @@ export class ParserService {
         console.warn(err);
       })
     return vaults;
+  }
+
+  private createVaultResponse(id: string, value: unknown, vaultPassphrase: any, decryptedVault): VaultResponse {
+    return {id: id,
+      key: vaultPassphrase,
+      data: JSON.parse(decryptedVault),
+      role: value['role'],
+      modifiedBy: value['modifiedBy'],
+      modifiedDate: new Date(value['modifiedDate']),
+      createdBy: value['createdBy'],
+      createdDate: new Date(value['createdDate'])
+    }
   }
 }

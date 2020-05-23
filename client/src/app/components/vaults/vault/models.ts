@@ -20,11 +20,21 @@ export class Vault{
 
   constructor(name: string, userEmail: string) {
     this.vaultName = name;
-    this.createdAt = new Date();
-    this.createdBy = userEmail;
     this.rows = []
     this.role = 'CREATOR';
     this.modifiedDate = null;
     this.modifiedBy = null;
   }
+}
+
+export interface VaultResponse {
+  id: string,
+  data: object,
+  role: string,
+  key: string,
+  modifiedBy: string,
+  modifiedDate: Date,
+  createdBy: string,
+  createdDate: Date,
+
 }
