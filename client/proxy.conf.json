@@ -13,5 +13,20 @@
     "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
+  },
+  "/vault/update": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/vault/delete": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/vaultuser/" : {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
   }
 }

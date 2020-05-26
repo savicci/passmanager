@@ -12,16 +12,10 @@
   color: #673ab7;
 }
 
-#vault-content {
-  display: flex;
-  justify-content: center;
-  margin-top: 8px;
-}
-
 .entry-button{
   display: flex;
   justify-content: center;
-  margin-top: 8px;
+  margin: 8px 0;
 }
 
 .vault-option {
@@ -32,9 +26,4 @@
 .option-button {
   -webkit-text-fill-color:white;
   transform: scale(1.3);
-}
-
-.content-row {
-  display: flex;
-  justify-content: space-between;
 }

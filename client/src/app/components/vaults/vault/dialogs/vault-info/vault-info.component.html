@@ -1,0 +1,40 @@
+<div class="vault-info">
+  <h4 class="mat-h4">VaultName: {{this.data.vault.data.vaultName}}, Id: {{this.data.vault.id}}</h4>
+  <h3 class="mat-h3" *ngIf="data.vault.modifiedBy">Last modified on {{this.data.vault.modifiedDate.toISOString()}} by {{this.data.vault.modifiedBy}}</h3>
+  <h3 class="mat-h3">Created on {{this.data.vault.createdDate.toISOString()}} by {{this.data.vault.createdBy}}</h3>
+  <h3 class="mat-h3">Your role is: {{this.data.vault.role}} which means you can</h3>
+  <div class="role-options">
+    <div>
+      <button mat-flat-button color="primary">
+    <mat-icon>
+      visibility
+    </mat-icon>
+        <p>View</p>
+      </button>
+    </div>
+    <div *ngIf="data.vault.role !== 'VIEWER'">
+      <button mat-flat-button color="primary">
+        <mat-icon>
+          edit
+        </mat-icon>
+        <p>Modify entries</p>
+      </button>
+    </div>
+    <div *ngIf="data.vault.role !== 'EDITOR' && data.vault.role !== 'VIEWER'">
+      <button mat-flat-button color="primary">
+        <mat-icon>
+          delete
+        </mat-icon>
+        <p>Delete vault</p>
+      </button>
+    </div>
+    <div *ngIf="data.vault.role !== 'EDITOR' && data.vault.role !== 'VIEWER'">
+      <button mat-flat-button color="primary">
+        <mat-icon>
+          perm_identity
+        </mat-icon>
+        <p>Edit permissions</p>
+      </button>
+    </div>
+  </div>
+</div>

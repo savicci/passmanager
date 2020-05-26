@@ -1,33 +1,27 @@
 <div id="vault-options">
-  <button mat-button class="vault-option option-button">
+  <button mat-button class="vault-option option-button" (click)="showVaultUsers()">
     <mat-icon>people</mat-icon>
     Users
   </button>
-  <button mat-button class="vault-option option-button">
+  <button mat-button class="vault-option option-button" (click)="saveVault()">
     <mat-icon>save_alt</mat-icon>
     Save
   </button>
-  <button mat-button class="vault-option option-button">
+  <button mat-button class="vault-option option-button" (click)="deleteVault()">
     <mat-icon>delete</mat-icon>
     Delete
   </button>
-  <button mat-button class="vault-option option-button">
-    <mat-icon>help</mat-icon>
-    Help
-  </button>
-  <button mat-button class="vault-option option-button">
+  <button mat-button class="vault-option option-button" (click)="showVaultInfo()">
     <mat-icon>info</mat-icon>
     Info
   </button>
 </div>
 <div class="entry-button">
-<button mat-flat-button color="primary" (click)="createNewEntry()">
-  <mat-icon>add</mat-icon>
-  Create new entry
-</button>
+  <button mat-flat-button color="primary" (click)="createNewEntry()">
+    <mat-icon>add</mat-icon>
+    Create new entry
+  </button>
 </div>
-<div id="vault-content">
-  <div *ngFor="let row of vaultContent.data.rows" class="content-row">
-    <app-vault-row [vaultRow]="row"></app-vault-row>
-  </div>
+<div *ngFor="let row of vaultContent.data.rows">
+  <app-vault-row [vaultRow]="row" (deleteEmitter)="deleteRow($event)"></app-vault-row>
 </div>

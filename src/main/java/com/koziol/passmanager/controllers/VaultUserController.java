@@ -163,6 +163,15 @@ public class VaultUserController {
         return ResponseEntity.ok(createVaultUserRS(requestedVaultUserOptional.get()));
     }
 
+    @GetMapping("/key")
+    public ResponseEntity<?> getUserPublicKey(@RequestParam(name = "email") String email){
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isEmpty()){
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(new String(userOptional.get().getPublicKey()));
+    }
+
     private GetAllVaultUsersRS createGetAllVaultUsersRS(List<VaultUser> vaultUsers) {
         return new GetAllVaultUsersRS(vaultUsers.stream()
                 .collect(Collectors.toMap(vaultUser -> vaultUser.getUser().getEmail(), this::createVaultUserRS)));

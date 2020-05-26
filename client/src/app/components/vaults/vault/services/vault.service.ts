@@ -62,8 +62,6 @@ export class VaultService {
 
   deleteVault(id: any) {
     return this.vaultApi.deleteVault(id)
-      .then(res => res)
-      .catch(err => console.warn(err))
   }
 
 

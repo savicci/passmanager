@@ -48,4 +48,12 @@ export class RsaEncryptionService {
     this.keys = imported.keyPair;
     this.iv = imported.iv;
   }
+
+  encryptKey(keyPassphrase: any, publicKey: any) {
+    return RsaEncryption.importPublicKey(publicKey)
+      .then(key => {
+        return RsaEncryption.publicEncrypt(this.encoding.convertStringToArrayBuffer(keyPassphrase), key)
+          .then(res =>  this.encoding.convertArrayBufferToString(res));
+      });
+  }
 }

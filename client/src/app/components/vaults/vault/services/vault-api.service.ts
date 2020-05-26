@@ -13,7 +13,6 @@ export class VaultApiService {
   public addNewVault(requestBody) {
     return this.httpClient.post('/vault/add', requestBody, {observe: 'response', responseType: 'text'}).toPromise()
       .then(res => {
-        console.log(res);
         return res;
       })
       .catch(err => {

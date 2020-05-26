@@ -61,6 +61,20 @@ export class RsaEncryption {
     };
   }
 
+  static importPublicKey(publicKey){
+    const unwrappedPublicKey = this.unwrapPublicKey(publicKey);
+    return window.crypto.subtle.importKey(
+      "spki",
+      unwrappedPublicKey,
+      {
+        name: "RSA-OAEP",
+        hash: "SHA-256"
+      },
+      true,
+      ["encrypt"]
+    );
+  }
+
   static async importKeys(pemKeys, symmetricKey) {
     const unwrappedPublicKey = this.unwrapPublicKey(pemKeys.publicKey);
 

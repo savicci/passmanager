@@ -7,6 +7,8 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 
 const material = [
@@ -17,7 +19,9 @@ const material = [
   MatInputModule,
   MatSnackBarModule,
   MatDialogModule,
-  MatSidenavModule
+  MatSidenavModule,
+  MatOptionModule,
+  MatSelectModule
 ];
 
 @NgModule({
