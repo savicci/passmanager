@@ -36,4 +36,35 @@ export class VaultUserApiService {
         throw this.errorHandler.handleHttpError(err);
       })
   }
+
+  getAllUsers(id: string) {
+    return this.httpClient.get(`/vaultuser/all?id=${id}`, {observe: 'response'}).toPromise()
+      .catch(err => {
+        throw this.errorHandler.handleHttpError(err);
+      })
+  }
+
+  modifyPermissions(role: any, email: any, vaultId: any) {
+    const requestBody = {
+      vaultId: vaultId,
+      email: email,
+      newRole: role
+    }
+    return this.httpClient.post('/vaultuser/changepermission', requestBody, {observe: 'response', responseType: 'text'}).toPromise()
+      .catch(err => {
+        throw this.errorHandler.handleHttpError(err);
+      })
+  }
+
+  deleteUser(email: any, vaultId: any) {
+    const requestBody= {
+      vaultId: vaultId,
+      email: email
+    }
+    return this.httpClient.post('/vaultuser/delete', requestBody, {observe: 'response', responseType: 'text'})
+      .toPromise()
+      .catch(err => {
+        throw this.errorHandler.handleHttpError(err);
+      })
+  }
 }

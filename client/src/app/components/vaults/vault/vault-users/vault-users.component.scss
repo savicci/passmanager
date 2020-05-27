@@ -2,10 +2,15 @@
   padding: 4px;
 }
 
-.vault-user-form.mat-form-field{
+.vault-user-form.mat-form-field {
   padding: 4px;
 }
 
-.vault-user-form.button{
+.vault-user-form.button {
   padding: 4px;
+}
+
+.vault-user-actions{
+  display: flex;
+  justify-content: space-around;
 }

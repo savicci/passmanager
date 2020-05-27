@@ -24,6 +24,7 @@ import {VaultContentComponent} from "./components/vaults/vault/vault-content/vau
 import {CreateEntryComponent} from "./components/vaults/vault/dialogs/create-entry/create-entry.component";
 import {VaultInfoComponent} from "./components/vaults/vault/dialogs/vault-info/vault-info.component";
 import {VaultUsersComponent} from "./components/vaults/vault/vault-users/vault-users.component";
+import {VaultUserRowComponent} from "./components/vaults/vault/vault-users/vault-user-row/vault-user-row.component";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import {VaultUsersComponent} from "./components/vaults/vault/vault-users/vault-u
     VaultContentComponent,
     CreateEntryComponent,
     VaultInfoComponent,
-    VaultUsersComponent
+    VaultUsersComponent,
+    VaultUserRowComponent
   ],
   imports: [
     BrowserModule,

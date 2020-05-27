@@ -24,4 +24,19 @@ export class VaultUserService {
         throw err;
       })
   }
+
+  getAllVaultUsers(id: string) {
+    return this.vaultUserApiService.getAllUsers(id)
+      .catch(err => {
+        throw err;
+      })
+  }
+
+  modifyPermissions(role: any, email: any, vaultId: any) {
+    return this.vaultUserApiService.modifyPermissions(role, email, vaultId);
+  }
+
+  deleteUser(email: any, vaultId: any) {
+    return this.vaultUserApiService.deleteUser(email, vaultId);
+  }
 }

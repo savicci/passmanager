@@ -10,6 +10,7 @@ import {VaultUserService} from "../services/vault-user.service";
 })
 export class VaultUsersComponent implements OnInit {
   addForm;
+  users;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { id: string, role: string, key: string}, private formBuilder: FormBuilder, private vaultUserService: VaultUserService) {
     this.addForm = this.formBuilder.group({
@@ -19,6 +20,10 @@ export class VaultUsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.vaultUserService.getAllVaultUsers(this.data.id)
+      .then(res => {
+        this.users = Object.values(res.body['vaultUsers']);
+      })
   }
 
   addUserToVault(value: any) {

@@ -132,9 +132,9 @@ public class VaultUserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllVaultUsers(@RequestBody GetAllVaultUsersRQ request, Authentication authentication) {
+    public ResponseEntity<?> getAllVaultUsers(@RequestParam(name = "id") long vaultId, Authentication authentication) {
         User user = getUser(authentication);
-        Optional<VaultUser> vaultUserOptional = getVaultUserFromRequest(user, request.getVaultId());
+        Optional<VaultUser> vaultUserOptional = getVaultUserFromRequest(user, vaultId);
 
         if (vaultUserOptional.isEmpty()) {
             return new ResponseEntity<>("vault not found", HttpStatus.NOT_FOUND);

@@ -1,6 +1,10 @@
 <div class="vault-users">
-  <div class="vault-users-options" *ngIf="data.role === 'CREATOR' || data.role === 'ADMIN'">
-    <h4 class="mat-h4">Add new user to vault</h4>
+  <mat-expansion-panel class="vault-users-options" *ngIf="data.role === 'CREATOR' || data.role === 'ADMIN'" [expanded]="false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Add new user to vault
+      </mat-panel-title>
+    </mat-expansion-panel-header>
     <form [formGroup]="addForm" (ngSubmit)="addUserToVault(addForm.value)" class="vault-user-form">
       <mat-form-field>
         <mat-label>Email</mat-label>
@@ -16,8 +20,11 @@
       </mat-form-field>
       <button mat-flat-button color="primary" type="submit" [disabled]="!addForm.valid">Add user</button>
     </form>
-  </div>
+  </mat-expansion-panel>
   <div class="vault-users-list">
-
+    <h3 class="mat-h3">All users</h3>
+    <div *ngFor="let user of users">
+      <app-vault-user-row [user]="user" [role]="data.role" [vaultId]="data.id"></app-vault-user-row>
+    </div>
   </div>
 </div>

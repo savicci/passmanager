@@ -1,0 +1,45 @@
+<div class="vault-user-row">
+  <mat-expansion-panel class="panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="primary-color">
+        {{user.email}}
+      </mat-panel-title>
+      <mat-panel-description class="primary-color">
+        {{user.role}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <h4 class="mat-4">Created by {{user.createdBy}} on {{user.createdDate}}</h4>
+    <h4 class="mat-4" *ngIf="user.modifiedDate">Last modified by {{user.modifiedBy}} on {{user.modifiedDate}}</h4>
+    <div class="vault-user-actions">
+      <button mat-button (click)="changeFormVisibility()">
+        <mat-icon>
+          edit
+        </mat-icon>
+        Change permission
+      </button>
+      <button mat-button (click)="deleteVaultUser()">
+        <mat-icon>
+          delete
+        </mat-icon>
+        Delete user
+      </button>
+    </div>
+    <div *ngIf="changeActive" class="change-form">
+      <form [formGroup]="permissionForm" (ngSubmit)="changeUserPermissions(permissionForm.value)">
+        <mat-form-field appearance="legacy" class="select-form">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role" required>
+            <mat-option value="ADMIN">Admin</mat-option>
+            <mat-option value="EDITOR">Editor</mat-option>
+            <mat-option value="VIEWER">Viewer</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-flat-button color="primary" type="submit" [disabled]="!permissionForm.valid">Change</button>
+        <div *ngIf="reqMessage">
+          <h3 class="mat-h3">{{reqMessage}}</h3>
+        </div>
+      </form>
+    </div>
+  </mat-expansion-panel>
+</div>
