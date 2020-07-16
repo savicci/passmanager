@@ -8,18 +8,15 @@ import {Router} from "@angular/router";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent{
   loginForm;
-  errorMsg;
+  errorMsg: string;
 
   constructor(private authService: AuthenticationService, private formBuilder: FormBuilder, private router: Router) {
     this.loginForm = this.formBuilder.group({
       email: '',
       password: ''
     });
-  }
-
-  ngOnInit(): void {
   }
 
   authenticate(data) {
@@ -30,7 +27,7 @@ export class LoginComponent implements OnInit {
       })
       .catch(err => {
         this.errorMsg = err.message;
+        this.loginForm.reset();
       })
-    this.loginForm.reset();
   }
 }

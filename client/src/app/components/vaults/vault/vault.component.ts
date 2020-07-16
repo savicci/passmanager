@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {PassphraseService} from "../../services/passphrase.service";
 import {FormBuilder} from "@angular/forms";
 import {VaultService} from "./services/vault.service";
-import {RsaEncryptionService} from "../../services/rsa-encryption.service";
-import {EncodingService} from "../../services/encoding.service";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateVaultComponent} from "./dialogs/create-vault/create-vault.component";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -25,42 +23,25 @@ export class VaultComponent implements OnInit {
               private dialog: MatDialog,
               private router: Router,
               private route: ActivatedRoute
-              ) {
+  ) {
     this.vaultForm = this.formBuilder.group({
       name: '',
     })
   }
 
   ngOnInit(): void {
-    this.vaults = [];
-    const dialogRef = this.passphraseService.requestPassphrase('Please enter passphrase for decryption of keys');
+    console.log(this.vaults);
+    if (sessionStorage.getItem('userInfo') != null) {
+      if(!this.vaults){
+        const dialogRef = this.passphraseService.requestPassphrase('Please enter passphrase for decryption of keys');
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.refreshVaults();
-    })
-  }
-
-  createNewVault(value: any) {
-    this.vaultService.createNewVault(value.name)
-      .then(() => {
-        this.refreshVaults();
-      })
-  }
-
-  modifyVault() {
-    this.vaults[0].data.modifiedDate = new Date();
-    this.vaultService.modifyVault(this.vaults[0].data, this.vaults[0].id, this.vaults[0].key)
-      .then(() => {
+        dialogRef.afterClosed().subscribe(() => {
           this.refreshVaults();
-        }
-      )
-  }
-
-  deleteVault() {
-    this.vaultService.deleteVault(this.vaults[0].id)
-      .then(() => {
-        this.refreshVaults();
-      })
+        })
+      }
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 
   refreshVaults() {
@@ -86,6 +67,9 @@ export class VaultComponent implements OnInit {
 
   selectedVault() {
     const id = this.route.snapshot.params['id'];
+    if(id && !this.vaults){
+      this.router.navigate(['/vault'])
+    }
     return this.vaults.find(vault => {
       return id === vault.id;
     })

@@ -1,31 +1,31 @@
 {
   "/auth/": {
-    "target": "http://localhost:8080",
+    "target": "https://localhost:8443",
     "secure": false,
     "logLevel": "debug"
   },
   "/vault/add": {
-    "target": "http://localhost:8080",
+    "target": "https://localhost:8443",
     "secure": false,
     "logLevel": "debug"
   },
   "/vault/all": {
-    "target": "http://localhost:8080",
+    "target": "https://localhost:8443",
     "secure": false,
     "logLevel": "debug"
   },
   "/vault/update": {
-    "target": "http://localhost:8080",
+    "target": "https://localhost:8443",
     "secure": false,
     "logLevel": "debug"
   },
   "/vault/delete": {
-    "target": "http://localhost:8080",
+    "target": "https://localhost:8443",
     "secure": false,
     "logLevel": "debug"
   },
   "/vaultuser/" : {
-    "target": "http://localhost:8080",
+    "target": "https://localhost:8443",
     "secure": false,
     "logLevel": "debug"
   }

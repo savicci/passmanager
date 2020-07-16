@@ -17,6 +17,7 @@ export class UserService {
       })
       .catch(err => {
         this.errorHandler.handleHttpError(err);
+        sessionStorage.removeItem('userInfo');
       })
   }
 

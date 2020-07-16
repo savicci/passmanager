@@ -23,7 +23,7 @@ export class CreateVaultComponent implements OnInit {
   }
 
   createVault(value: any){
-    this.vaultService.createNewVault(value.name)
+    return this.vaultService.createNewVault(value.name)
       .then(() => {
         this.snackBar.open('vault created', null, {duration: 2000});
         this.dialogRef.close();

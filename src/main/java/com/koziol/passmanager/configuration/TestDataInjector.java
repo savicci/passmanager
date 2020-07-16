@@ -10,6 +10,7 @@ import com.koziol.passmanager.database.repositories.VaultRoleRepository;
 import com.koziol.passmanager.database.repositories.VaultUserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -42,15 +43,12 @@ public class TestDataInjector {
     }
 
     @Bean
+    @Profile("dev")
     CommandLineRunner injectData() {
         return args -> {
             // user
             User user = new User("user@email.com", passwordEncoder.encode("password"), privateKey.getBytes(), publicKey.getBytes());
             userRepository.save(user);
-
-            // user2
-            User user2 = new User("user2@email.com", passwordEncoder.encode("password"), "private".getBytes(), "public".getBytes());
-            userRepository.save(user2);
 
             // vault for user@email.com
             Vault vault = new Vault();

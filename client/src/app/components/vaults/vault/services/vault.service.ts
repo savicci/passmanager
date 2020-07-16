@@ -25,7 +25,7 @@ export class VaultService {
     let newVault = new Vault(name);
     const aesKeyPassphrase = this.aesEncryption.getRandom32ByteString()
 
-    this.aesEncryption.generateAesKey(aesKeyPassphrase)
+    return this.aesEncryption.generateAesKey(aesKeyPassphrase)
       .then(aesKey => {
         this.aesEncryption.encryptData(JSON.stringify(newVault), aesKey)
           .then(encryptedVault => {

@@ -17,6 +17,7 @@ import {VaultUsersComponent} from "../vault-users/vault-users.component";
 export class VaultContentComponent implements OnInit {
   @Input()
   vaultContent: VaultResponse;
+  saveButtonColor = 'primary';
 
   constructor(private router: Router, private dialog: MatDialog, private vaultService: VaultService, private snackBar: MatSnackBar) {
   }
@@ -33,13 +34,16 @@ export class VaultContentComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result !== undefined){
         this.vaultContent.data.rows.push(result);
+        this.saveButtonColor = 'warn';
       }
     });
   }
 
   saveVault() {
     this.vaultService.modifyVault(this.vaultContent.data, this.vaultContent.id, this.vaultContent.key)
-      .then(res => console.log(res))
+      .then(res => {
+        this.saveButtonColor = 'primary';
+      })
       .catch(err => console.warn(err))
   }
 
@@ -89,5 +93,9 @@ export class VaultContentComponent implements OnInit {
         key: this.vaultContent.key
       }
     });
+  }
+
+  showChanged($event: any) {
+    this.saveButtonColor = 'warn';
   }
 }

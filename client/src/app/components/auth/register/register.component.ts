@@ -4,7 +4,6 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {ErrorStateMatcher} from "@angular/material/core";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {RegistrationSnackBarComponent} from "./registration-snack-bar/registration-snack-bar.component";
 
 @Component({
   selector: 'app-register',
@@ -32,7 +31,7 @@ export class RegisterComponent implements OnInit {
   async onSubmit(data) {
     await this.authService.register(data)
       .then(() => {
-        this._snackBar.openFromComponent(RegistrationSnackBarComponent, {
+        this._snackBar.open("Registration succesfull. You can now log in", null, {
           duration: 5000,
           verticalPosition: "top"
         });

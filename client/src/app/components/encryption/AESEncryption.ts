@@ -1,5 +1,6 @@
 export class AesEncryption {
   static async generateAesKey(passphrase: string): Promise<CryptoKey> {
+    //TODO add salt
     const rawKey = await crypto.subtle.digest({name: 'SHA-256'}, new TextEncoder().encode(passphrase));
     return window.crypto.subtle.importKey(
       "raw",

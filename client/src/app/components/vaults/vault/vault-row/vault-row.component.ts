@@ -14,6 +14,7 @@ export class VaultRowComponent implements OnInit {
 
   @Input() vaultRow: VaultRow;
   @Output() deleteEmitter = new EventEmitter();
+  @Output() changeEmitter = new EventEmitter();
   entryForm: any;
   disabled: boolean = true;
   cache: any;
@@ -60,6 +61,7 @@ export class VaultRowComponent implements OnInit {
     this.vaultRow.updatedBy = this.userService.getUserInfo().username;
     this.vaultRow.updatedDate = JSON.parse(JSON.stringify(new Date())) // XDD but somehow formats as i would like
     this.entryForm.controls['updatedDate'].setValue(this.vaultRow.updatedDate);
+    this.changeEmitter.emit(true);
   }
 
   copyToClipboard() {

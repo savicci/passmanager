@@ -45,7 +45,7 @@ export class EncryptionService {
   }
 
   writeUserInfoToStorage(body) {
-    localStorage.setItem('userInfo', JSON.stringify(body));
+    sessionStorage.setItem('userInfo', JSON.stringify(body));
   }
 
   getUserInfoFromStorage() {

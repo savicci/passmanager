@@ -15,6 +15,7 @@ export class ErrorHandlingService {
     if (err.status === 401) {
       this.snackBar.open('Your session has expired. Please log in again', null, {duration: 3000});
       localStorage.removeItem('authenticated');
+      sessionStorage.removeItem('userInfo');
       this.router.navigate(['/login']);
     } else if (err.status === 403) {
       this.snackBar.open('You are not allowed to execute this operation', null, {duration: 2000});
