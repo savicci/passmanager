@@ -22,13 +22,17 @@ export class UserService {
   }
 
   getUserInfo() {
-    const infoString = localStorage.getItem('userInfo');
+    const infoString = sessionStorage.getItem('userInfo');
     if(infoString !== null){
       return JSON.parse(infoString);
     }
     this.refreshUserInfo()
       .then(() => {
-        return JSON.parse(localStorage.getItem('userInfo'));
+        return JSON.parse(sessionStorage.getItem('userInfo'));
       })
+  }
+
+  setUserInfo(body){
+    sessionStorage.setItem('userInfo', JSON.stringify(body));
   }
 }

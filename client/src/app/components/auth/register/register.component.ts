@@ -28,8 +28,8 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async onSubmit(data) {
-    await this.authService.register(data)
+  onSubmit(data) {
+    this.authService.register(data)
       .then(() => {
         this._snackBar.open("Registration succesfull. You can now log in", null, {
           duration: 5000,
@@ -38,17 +38,14 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['/login'])
       })
       .catch(err => {
-        console.log(err);
         this.errorMsg = err.error;
+        this.registerForm.reset();
       })
-
-    this.registerForm.reset();
   }
 
   checkPasswords(group: FormGroup) {
     let pass = group.get('password').value;
     let confirmPass = group.get('passwordReEnter').value;
-
     return pass === confirmPass ? null : {notSame: true}
   }
 }

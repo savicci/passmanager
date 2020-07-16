@@ -1,0 +1,44 @@
+#container-center {
+  width: 100%;
+}
+
+#welcome-text {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding: 32px 0;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  min-height: 160px;
+  padding: 8px;
+}
+
+.feature > * {
+  flex: 50%;
+}
+
+.white-text {
+  background-color: #673ab7;
+  color: white;
+}
+
+.primary-text {
+  background-color: white;
+  color: #673ab7;
+}
+
+.home-element{
+  display: flex;
+  justify-content: center;
+}
+
+.home-icon{
+  transform: scale(4);
+}
+
+.sec-icon{
+  transform: scale(3);
+}

@@ -9,18 +9,12 @@ import javax.sql.DataSource;
 
 @Configuration
 public class DatabaseConfig {
-//    # database configuration
-//    spring.datasource.driver-class-name=org.h2.Driver
-//    spring.datasource.url=jdbc:h2:mem:passmanager;MODE=MYSQL
-//    spring.datasource.username=sa
-//    spring.datasource.password=
-
     @Bean
     @Profile("dev")
     public DataSource getDataSourceDEV() {
         return DataSourceBuilder.create()
                 .driverClassName("org.h2.Driver")
-                .url("dbc:h2:mem:passmanager;MODE=MYSQL")
+                .url("jdbc:h2:mem:passmanager;MODE=MYSQL")
                 .username("sa")
                 .password("")
                 .build();
