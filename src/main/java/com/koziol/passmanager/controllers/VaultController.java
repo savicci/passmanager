@@ -50,20 +50,23 @@ public class VaultController {
     @PostMapping("/update")
     public ResponseEntity<?> modifyExistingVault(@RequestBody ModifyVaultRQ request, Authentication authentication) {
         User user = userRepository.findByEmail(authentication.getPrincipal().toString()).orElseThrow(IllegalAccessError::new);
+
         Map<Long, VaultUser> vaultUserByVaultName = user.getVaultUserList()
                 .stream()
                 .collect(Collectors.toMap(vaultUser -> vaultUser.getVault().getVaultId(), Function.identity()));
 
-        request.getVaultDataByVaultId().forEach((vaultId, vaultData) -> {
-            VaultUser vaultUser = vaultUserByVaultName.get(vaultId);
+        for (Map.Entry<Long, String> entry : request.getVaultDataByVaultId().entrySet()) {
+            VaultUser vaultUser = vaultUserByVaultName.get(entry.getKey());
             if (vaultUser != null && !vaultUser.getVaultRole().getRoleName().equals("VIEWER")) {
                 Vault vaultToModify = vaultUser.getVault();
-                vaultToModify.setVaultData(vaultData.getBytes());
+                vaultToModify.setVaultData(entry.getValue().getBytes());
                 vaultToModify.setModifiedBy(user);
                 vaultToModify.setModifiedDate(LocalDateTime.now());
                 vaultRepository.save(vaultUser.getVault());
+            } else {
+                return new ResponseEntity<>("You don't have permission to execute this operation", HttpStatus.FORBIDDEN);
             }
-        });
+        }
         return ResponseEntity.ok("vaults updated");
     }
 

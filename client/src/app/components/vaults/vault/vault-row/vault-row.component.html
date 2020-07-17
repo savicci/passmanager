@@ -2,22 +2,17 @@
   <div class="vault-row-header">
     <button mat-button color="primary">Title: {{vaultRow.name}}</button>
     <div id="vault-row-actions">
-      <button mat-button color="primary" class="action-button" (click)="copyToClipboard()">
-        <mat-icon>
-          save
-        </mat-icon>
-      </button>
-      <button mat-button color="primary" class="action-button"  *ngIf="!this.disabled" (click)="saveChanges()">
+      <button mat-button color="primary" class="action-button" *ngIf="!this.disabled" (click)="saveChanges()">
         <mat-icon>
           done
         </mat-icon>
       </button>
-      <button mat-button color="primary" class="action-button" (click)="changeEditMode()">
+      <button *ngIf="role !== 'VIEWER'" mat-button color="primary" class="action-button" (click)="changeEditMode()">
         <mat-icon>
           {{getIconType()}}
         </mat-icon>
       </button>
-      <button mat-button color="primary" class="action-button" (click)="deleteEntry()">
+      <button *ngIf="role !== 'VIEWER'" mat-button color="primary" class="action-button" (click)="deleteEntry()">
         <mat-icon>
           delete
         </mat-icon>
@@ -25,18 +20,32 @@
     </div>
   </div>
   <form [formGroup]="entryForm" class="vault-row-form">
-    <mat-form-field>
-      <mat-label>Username</mat-label>
-      <label>
-        <input matInput type="text" formControlName="username"/>
-      </label>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Password</mat-label>
-      <label>
-        <input matInput type="password" formControlName="password"/>
-      </label>
-    </mat-form-field>
+    <div>
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <label>
+          <input matInput type="text" formControlName="username"/>
+        </label>
+      </mat-form-field>
+      <button mat-button color="primary" class="clip-button" (click)="copyToClipboard(this.vaultRow.username)">
+        <mat-icon>
+          save
+        </mat-icon>
+      </button>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <label>
+          <input matInput type="password" formControlName="password"/>
+        </label>
+      </mat-form-field>
+      <button mat-button color="primary" class="clip-button" (click)="copyToClipboard(this.vaultRow.password)">
+        <mat-icon>
+          save
+        </mat-icon>
+      </button>
+    </div>
     <mat-form-field>
       <mat-label>Created by {{vaultRow.createdBy}} on</mat-label>
       <label>

@@ -7,12 +7,7 @@ import {VaultResponse} from "../../models";
   templateUrl: './vault-info.component.html',
   styleUrls: ['./vault-info.component.scss']
 })
-export class VaultInfoComponent implements OnInit {
-
+export class VaultInfoComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { vault: VaultResponse }) {
   }
-
-  ngOnInit(): void {
-  }
-
 }

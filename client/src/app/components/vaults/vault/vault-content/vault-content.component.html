@@ -3,11 +3,11 @@
     <mat-icon>people</mat-icon>
     Users
   </button>
-  <button mat-flat-button class="vault-option option-button" (click)="saveVault()" [color]="saveButtonColor">
+  <button *ngIf="vaultContent.role !== 'VIEWER'" mat-flat-button class="vault-option option-button" (click)="saveVault()" [color]="saveButtonColor">
     <mat-icon>save_alt</mat-icon>
     Save
   </button>
-  <button mat-button class="vault-option option-button" (click)="deleteVault()">
+  <button *ngIf="vaultContent.role !== 'VIEWER' && vaultContent.role !== 'EDITOR'"mat-button class="vault-option option-button" (click)="deleteVault()">
     <mat-icon>delete</mat-icon>
     Delete
   </button>
@@ -23,5 +23,5 @@
   </button>
 </div>
 <div *ngFor="let row of vaultContent.data.rows">
-  <app-vault-row [vaultRow]="row" (deleteEmitter)="deleteRow($event)" (changeEmitter)="showChanged($event)"></app-vault-row>
+  <app-vault-row [vaultRow]="row" (deleteEmitter)="deleteRow($event)" (changeEmitter)="showChanged($event)" [role]="vaultContent.role"></app-vault-row>
 </div>

@@ -49,7 +49,7 @@ export class EncryptionService {
   }
 
   getUserInfoFromStorage() {
-    return JSON.parse(localStorage.getItem('userInfo'));
+    return JSON.parse(sessionStorage.getItem('userInfo'));
   }
 
   decryptKeys(passphrase: any) {
@@ -57,11 +57,10 @@ export class EncryptionService {
     if (userInfo === null) {
       this.httpClient.get('/auth/user', {observe: 'response'}).toPromise()
         .then(res => {
-          localStorage.setItem('userInfo', JSON.stringify(res.body));
+          sessionStorage.setItem('userInfo', JSON.stringify(res.body));
           userInfo = res.body;
         })
         .catch(err => {
-          localStorage.removeItem('authenticated');
           this.router.navigate(['/login']);
         })
     }

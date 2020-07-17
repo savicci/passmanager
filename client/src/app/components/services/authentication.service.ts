@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {RsaEncryption} from "../encryption/RsaEncryption";
 import {AesEncryption} from "../encryption/AESEncryption";
-import {EncryptionService} from "../encryption/encryption.service";
 import {Router} from "@angular/router";
 import {RsaEncryptionService} from "./rsa-encryption.service";
 import {UserService} from "./user.service";
@@ -42,9 +41,9 @@ export class AuthenticationService {
       })
   }
 
-  public getUserEmail(){
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    if(userInfo === null){
+  public getUserEmail() {
+    const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+    if (userInfo === null) {
       sessionStorage.removeItem('passphraseProvided');
       this.router.navigate(['/login']);
     }
@@ -56,26 +55,25 @@ export class AuthenticationService {
     return this.httpClient.get('auth/user', {headers: httpHeaders, observe: 'response'}).toPromise()
       .then(res => {
         this.userService.setUserInfo(res.body);
-        localStorage.setItem('authenticated', 'true');
       })
       .catch((err) => {
-        localStorage.removeItem('authenticated');
         throw new Error('Wrong email or password provided');
       })
   }
 
   isAuthenticated() {
-    const item = localStorage.getItem('authenticated');
-    return item ? item === 'true' : false;
+    return sessionStorage.getItem('userInfo') != null;
   }
 
   logout() {
     return this.httpClient.get('/auth/logout', {responseType: 'text'}).toPromise()
       .then(() => {
-          localStorage.removeItem('authenticated');
+          sessionStorage.removeItem('userInfo');
+          this.router.navigate(['/'])
         }
       ).catch(() => {
-        localStorage.removeItem('authenticated');
+        sessionStorage.removeItem('userInfo');
+        this.router.navigate(['/'])
         throw new Error('Could not deauthenticate')
       })
   }

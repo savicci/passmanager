@@ -9,7 +9,7 @@ import {MatDialogRef} from "@angular/material/dialog";
   templateUrl: './create-entry.component.html',
   styleUrls: ['./create-entry.component.scss']
 })
-export class CreateEntryComponent implements OnInit {
+export class CreateEntryComponent {
   entryForm: any;
 
   constructor(private formBuilder: FormBuilder, private userService: UserService, private dialogRef: MatDialogRef<CreateEntryComponent>) {
@@ -18,9 +18,6 @@ export class CreateEntryComponent implements OnInit {
       username: '',
       password: '',
     })
-  }
-
-  ngOnInit(): void {
   }
 
   createEntry(value: any) {

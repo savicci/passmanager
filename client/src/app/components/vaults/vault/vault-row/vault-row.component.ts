@@ -4,7 +4,6 @@ import {FormBuilder, FormControl} from "@angular/forms";
 import {UserService} from "../../../services/user.service";
 import {Clipboard} from "@angular/cdk/clipboard";
 
-// thats some macaroni/spaghetti code, but no time to make it look better
 @Component({
   selector: 'app-vault-row',
   templateUrl: './vault-row.component.html',
@@ -13,6 +12,7 @@ import {Clipboard} from "@angular/cdk/clipboard";
 export class VaultRowComponent implements OnInit {
 
   @Input() vaultRow: VaultRow;
+  @Input() role: string;
   @Output() deleteEmitter = new EventEmitter();
   @Output() changeEmitter = new EventEmitter();
   entryForm: any;
@@ -64,8 +64,8 @@ export class VaultRowComponent implements OnInit {
     this.changeEmitter.emit(true);
   }
 
-  copyToClipboard() {
-    this.clipboard.copy(this.vaultRow.password);
+  copyToClipboard(value) {
+    this.clipboard.copy(value);
   }
 
   deleteEntry() {
