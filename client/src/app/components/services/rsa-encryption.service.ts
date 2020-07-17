@@ -40,7 +40,7 @@ export class RsaEncryptionService {
   }
 
   private async importRsaKeys(response: any, passphrase: string) {
-    const aesKey = await AesEncryption.generateAesKey(passphrase);
+    const aesKey = await AesEncryption.generateAesKey(response.username, passphrase);
     const imported = await RsaEncryption.importKeys({
       publicKey: response.publicKey,
       privateKey: response.encryptedPrivateKey

@@ -29,12 +29,14 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(data) {
+    console.log('registering');
     this.authService.register(data)
       .then(() => {
         this._snackBar.open("Registration succesfull. You can now log in", null, {
           duration: 5000,
           verticalPosition: "top"
         });
+        console.log('then registered');
         this.router.navigate(['/login'])
       })
       .catch(err => {

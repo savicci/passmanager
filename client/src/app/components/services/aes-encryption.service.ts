@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {AesEncryption} from "../encryption/AESEncryption";
 import {ErrorHandlingService} from "./error-handling.service";
 import {EncodingService} from "./encoding.service";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,12 @@ export class AesEncryptionService {
   private encoder = new TextEncoder();
   private decoder = new TextDecoder();
 
-  constructor(private errorHandler: ErrorHandlingService, private encoding: EncodingService) {
+  constructor(private errorHandler: ErrorHandlingService, private encoding: EncodingService, private userService: UserService) {
   }
 
 
   public generateAesKey(passphrase: string) {
-    return AesEncryption.generateAesKey(passphrase)
+    return AesEncryption.generateAesKey('', passphrase)
       .then(res => res)
       .catch(err => {
         throw this.errorHandler.handleEncryptionError('Error during aes key generation', err)

@@ -24,7 +24,7 @@ export class AuthenticationService {
 
   async setUpRequestBody(data: any) {
     const keys = await RsaEncryption.generateRsaKeyPair();
-    const aesKey = await AesEncryption.generateAesKey(data.passphrase);
+    const aesKey = await AesEncryption.generateAesKey(data.email, data.passphrase);
     const iv = crypto.getRandomValues(new Uint8Array(12));
 
     return RsaEncryption.exportKeys(keys, aesKey, iv)
