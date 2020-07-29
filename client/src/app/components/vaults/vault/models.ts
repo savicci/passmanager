@@ -11,6 +11,7 @@ export class VaultRow {
 export class Vault{
   vaultName: string;
   rows: VaultRow[];
+  garbageData: string
 
   constructor(name: string) {
     this.vaultName = name;
@@ -27,5 +28,4 @@ export class VaultResponse {
   modifiedDate: Date;
   createdBy: string;
   createdDate: Date;
-
 }

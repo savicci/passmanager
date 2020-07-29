@@ -30,7 +30,6 @@ export class VaultComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.vaults);
     if (sessionStorage.getItem('userInfo') != null) {
       if(!this.vaults){
         const dialogRef = this.passphraseService.requestPassphrase('Please enter passphrase for decryption of keys');
@@ -69,10 +68,11 @@ export class VaultComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     if(id && !this.vaults){
       this.router.navigate(['/vault'])
+    }else{
+      return this.vaults.find(vault => {
+        return id === vault.id;
+      })
     }
-    return this.vaults.find(vault => {
-      return id === vault.id;
-    })
   }
 
   changeSidenavVisibility() {

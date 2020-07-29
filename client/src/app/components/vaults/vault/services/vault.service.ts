@@ -51,6 +51,7 @@ export class VaultService {
   }
 
   public modifyVault(vault: Vault, id, vaultPassphrase) {
+    vault.garbageData = this.generateGarbageData();
     return this.aesEncryption.generateAesKey(vaultPassphrase)
       .then(aesKey => {
         this.aesEncryption.encryptData(JSON.stringify(vault), aesKey)
@@ -71,5 +72,19 @@ export class VaultService {
       encryptedVaultKey: encryptedVaultKey,
       vaultData: encryptedVault
     }
+  }
+
+  private generateGarbageData() {
+    // between 0 and 512 bytes of data will be generated
+    let numberOfBytes = Math.floor(Math.random() * 512);
+    let arr = new Uint8Array((numberOfBytes || 40) / 2)
+    crypto.getRandomValues(arr)
+    let x = Array.from(arr, this.dec2hex).join('');
+    console.log(x)
+    return x;
+  }
+
+  dec2hex (dec) {
+    return dec < 10 ? '0' + String(dec) : dec.toString(16)
   }
 }

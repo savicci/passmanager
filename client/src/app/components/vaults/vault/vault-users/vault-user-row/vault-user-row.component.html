@@ -41,5 +41,9 @@
         </div>
       </form>
     </div>
+    <div *ngIf="errorMsg" class="error-box">
+      <mat-icon class="info-icon">error_outline</mat-icon>
+      {{errorMsg}}
+    </div>
   </mat-expansion-panel>
 </div>

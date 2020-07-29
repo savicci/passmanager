@@ -14,8 +14,7 @@ export class VaultUserApiService {
     return this.httpClient.get(`/vaultuser/key?email=${email}`, {observe: 'response', responseType: 'text'}).toPromise()
       .then(res => res)
       .catch(err => {
-        console.log(err);
-        throw this.errorHandler.handleHttpError(err);
+        throw err;
       })
   }
 
@@ -33,7 +32,7 @@ export class VaultUserApiService {
         return res;
       })
       .catch(err => {
-        throw this.errorHandler.handleHttpError(err);
+        throw err;
       })
   }
 
@@ -52,7 +51,7 @@ export class VaultUserApiService {
     }
     return this.httpClient.post('/vaultuser/changepermission', requestBody, {observe: 'response', responseType: 'text'}).toPromise()
       .catch(err => {
-        throw this.errorHandler.handleHttpError(err);
+        throw err;
       })
   }
 
@@ -64,7 +63,7 @@ export class VaultUserApiService {
     return this.httpClient.post('/vaultuser/delete', requestBody, {observe: 'response', responseType: 'text'})
       .toPromise()
       .catch(err => {
-        throw this.errorHandler.handleHttpError(err);
+        throw err;
       })
   }
 }

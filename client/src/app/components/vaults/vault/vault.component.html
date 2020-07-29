@@ -18,7 +18,7 @@
       <h1 class="mat-h1">Start by opening vault or creating one in the side menu</h1>
     </div>
     <ng-template #vaultContent>
-      <app-vault-content [vaultContent]="selectedVault()"></app-vault-content>
+      <app-vault-content [vaultContent]="selectedVault()" (deleteEmitter)="refreshVaults()"></app-vault-content>
     </ng-template>
 
   </mat-sidenav-content>

@@ -3,11 +3,11 @@
     <mat-icon>people</mat-icon>
     Users
   </button>
-  <button *ngIf="vaultContent.role !== 'VIEWER'" mat-flat-button class="vault-option option-button" (click)="saveVault()" [color]="saveButtonColor">
+  <button *ngIf="vaultContent && vaultContent.role !== 'VIEWER'" mat-flat-button class="vault-option option-button" (click)="saveVault()" [color]="saveButtonColor">
     <mat-icon>save_alt</mat-icon>
     Save
   </button>
-  <button *ngIf="vaultContent.role !== 'VIEWER' && vaultContent.role !== 'EDITOR'"mat-button class="vault-option option-button" (click)="deleteVault()">
+  <button *ngIf=" vaultContent && vaultContent.role !== 'VIEWER' && vaultContent.role !== 'EDITOR'"mat-button class="vault-option option-button" (click)="deleteVault()">
     <mat-icon>delete</mat-icon>
     Delete
   </button>
@@ -17,7 +17,7 @@
   </button>
 </div>
 <div class="entry-button">
-  <button mat-flat-button color="primary" (click)="createNewEntry()">
+  <button *ngIf="vaultContent.role != 'VIEWER'" mat-flat-button color="primary" (click)="createNewEntry()">
     <mat-icon>add</mat-icon>
     Create new entry
   </button>

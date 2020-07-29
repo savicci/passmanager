@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from "@angular/router";
 import {VaultResponse} from "../models";
 import {MatDialog} from "@angular/material/dialog";
@@ -15,8 +15,8 @@ import {VaultUsersComponent} from "../vault-users/vault-users.component";
   styleUrls: ['./vault-content.component.scss']
 })
 export class VaultContentComponent implements OnInit {
-  @Input()
-  vaultContent: VaultResponse;
+  @Input() vaultContent: VaultResponse;
+  @Output() deleteEmitter = new EventEmitter();
   saveButtonColor = 'primary';
 
   constructor(private router: Router, private dialog: MatDialog, private vaultService: VaultService, private snackBar: MatSnackBar) {
@@ -68,10 +68,9 @@ export class VaultContentComponent implements OnInit {
         this.vaultService.deleteVault(this.vaultContent.id)
           .catch(err => err)
           .then(res => {
-            console.log(res);
             this.snackBar.open(res.body, null, {duration: 3000});
             this.router.navigate(['/vault']);
-
+            this.deleteEmitter.emit();
           });
       }
     })

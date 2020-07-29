@@ -1,16 +1,16 @@
 <div class="vault-users">
-  <mat-expansion-panel class="vault-users-options" *ngIf="data.role === 'CREATOR' || data.role === 'ADMIN'" [expanded]="false">
+  <mat-expansion-panel class="vault-users-options" *ngIf="data.role === 'CREATOR' || data.role === 'ADMIN'" [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Add new user to vault
       </mat-panel-title>
     </mat-expansion-panel-header>
     <form [formGroup]="addForm" (ngSubmit)="addUserToVault(addForm.value)" class="vault-user-form">
-      <mat-form-field>
+      <mat-form-field class="vault-user-form-field">
         <mat-label>Email</mat-label>
         <input matInput type="email" formControlName="email" required>
       </mat-form-field>
-      <mat-form-field appearance="legacy">
+      <mat-form-field appearance="legacy" class="vault-user-form-field">
         <mat-label>Role</mat-label>
         <mat-select formControlName="role" required>
           <mat-option value="ADMIN">Admin</mat-option>
@@ -18,13 +18,17 @@
           <mat-option value="VIEWER">Viewer</mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-flat-button color="primary" type="submit" [disabled]="!addForm.valid">Add user</button>
+      <button mat-flat-button color="primary" type="submit" class="vault-user-form-field" [disabled]="!addForm.valid">Add user</button>
     </form>
+    <div *ngIf="errorMsg" class="error-box register-form-field">
+      <mat-icon class="info-icon">error_outline</mat-icon>
+      {{errorMsg}}
+    </div>
   </mat-expansion-panel>
   <div class="vault-users-list">
-    <h3 class="mat-h3">All users</h3>
+    <h2 class="mat-h2">All vault users</h2>
     <div *ngFor="let user of users">
-      <app-vault-user-row [user]="user" [role]="data.role" [vaultId]="data.id"></app-vault-user-row>
+      <app-vault-user-row [user]="user" [role]="data.role" [vaultId]="data.id" (changeEmitter)="refresh()"></app-vault-user-row>
     </div>
   </div>
 </div>

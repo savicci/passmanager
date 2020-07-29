@@ -53,6 +53,12 @@ public class VaultUserController {
             return new ResponseEntity<>("user with provided email does not exist", HttpStatus.NOT_FOUND);
         }
 
+        for(VaultUser vaultUser: userToAddOptional.get().getVaultUserList()){
+            if(vaultUser.getVault().getVaultId() == request.getVaultId()){
+                return new ResponseEntity<>("User already belongs to this vault", HttpStatus.FORBIDDEN);
+            }
+        }
+
         VaultUser vaultUserToAdd = new VaultUser();
         vaultUserToAdd.setUser(userToAddOptional.get());
         vaultUserToAdd.setVault(vaultUserOptional.get().getVault());
@@ -76,6 +82,10 @@ public class VaultUserController {
 
         if (!(vaultUserOptional.get().getVaultRole().getRoleName().equals("ADMIN") || vaultUserOptional.get().getVaultRole().getRoleName().equals("CREATOR"))) {
             return new ResponseEntity<>("you have no permission to delete user from vault", HttpStatus.FORBIDDEN);
+        }
+
+        if(request.getEmail().equals(user.getEmail()) && vaultUserOptional.get().getVaultRole().getRoleName().equals("CREATOR")){
+            return new ResponseEntity<>("You can't delete yourself from your vault", HttpStatus.FORBIDDEN);
         }
 
         Optional<VaultUser> vaultUserToDelete = vaultUserOptional.get().getVault()
@@ -106,7 +116,7 @@ public class VaultUserController {
         }
 
         if (!(vaultUserOptional.get().getVaultRole().getRoleName().equals("ADMIN") || vaultUserOptional.get().getVaultRole().getRoleName().equals("CREATOR"))) {
-            return new ResponseEntity<>("you have no permission to modify user permission for this vault", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("you can't modify user permission for this vault", HttpStatus.FORBIDDEN);
         }
 
         Optional<VaultUser> userToChangeOptional = vaultUserOptional.get().getVault()

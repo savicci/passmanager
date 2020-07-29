@@ -21,3 +21,19 @@
 .select-form{
   margin-right: 8px;
 }
+
+.error-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #D8000C;
+  background-color: #FFD2D2;
+  padding: 8px 0;
+  margin-bottom: 8px;
+  border-radius:.5em;
+  border: 2px solid;
+}
+
+.info-icon {
+  margin: 0 16px;
+}
