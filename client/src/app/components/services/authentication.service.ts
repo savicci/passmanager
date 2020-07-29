@@ -5,16 +5,22 @@ import {AesEncryption} from "../encryption/AESEncryption";
 import {Router} from "@angular/router";
 import {RsaEncryptionService} from "./rsa-encryption.service";
 import {UserService} from "./user.service";
+import {ChaCha20EncryptionService} from "./cha-cha20-encryption.service";
 
 @Injectable()
 export class AuthenticationService {
 
-  constructor(private httpClient: HttpClient, private encryptionService: RsaEncryptionService, private router: Router, private userService: UserService) {
+  constructor(private httpClient: HttpClient,
+              private encryptionService: RsaEncryptionService,
+              private router: Router,
+              private userService: UserService,
+              private chacha: ChaCha20EncryptionService) {
   }
 
   public async register(data: any) {
     await this.setUpRequestBody(data)
       .then(body => {
+        console.log(body);
         return this.httpClient.post('/auth/register', body, {responseType: 'text'}).toPromise()
       })
       .catch(err => {
@@ -24,10 +30,13 @@ export class AuthenticationService {
 
   async setUpRequestBody(data: any) {
     const keys = await RsaEncryption.generateRsaKeyPair();
-    const aesKey = await AesEncryption.generateAesKey(data.email, data.passphrase);
-    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const nonce = crypto.getRandomValues(new Uint8Array(8));
+    console.log('nonce', window.btoa(String.fromCharCode.apply(null, nonce)));
+    const counter = crypto.getRandomValues(new Uint8Array(8));
+    console.log('counter', window.btoa(String.fromCharCode.apply(null, counter)));
+    const chachaKey = await AuthenticationService.generateHash(data.email, data.passphrase);
 
-    return RsaEncryption.exportKeys(keys, aesKey, iv)
+    return this.encryptionService.exportKeys(keys, chachaKey, nonce, counter)
       .then(exportedKeys => {
         return {
           email: data.email,
@@ -76,5 +85,9 @@ export class AuthenticationService {
         this.router.navigate(['/'])
         throw new Error('Could not deauthenticate')
       })
+  }
+
+  public static async generateHash(salt, passphrase){
+    return await crypto.subtle.digest({name: 'SHA-256'}, new TextEncoder().encode(salt + passphrase));
   }
 }
