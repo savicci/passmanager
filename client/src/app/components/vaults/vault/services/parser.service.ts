@@ -1,42 +1,33 @@
-import { Injectable } from '@angular/core';
-import {Vault, VaultResponse} from "../models";
+import {Injectable} from '@angular/core';
+import {VaultResponse} from "../models";
 import {RsaEncryptionService} from "../../../services/rsa-encryption.service";
 import {AesEncryptionService} from "../../../services/aes-encryption.service";
 import {EncodingService} from "../../../services/encoding.service";
+import {ChaCha20EncryptionService} from "../../../services/cha-cha20-encryption.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ParserService {
 
-  constructor(private rsaEncryption: RsaEncryptionService, private aesEncryption: AesEncryptionService, private encoding: EncodingService) { }
+  constructor(private rsaEncryption: RsaEncryptionService,
+              private aesEncryption: AesEncryptionService,
+              private encoding: EncodingService,
+              private chacha: ChaCha20EncryptionService) {
+  }
 
   parseJsonToVaults(res) {
     let vaults = []
     let operations = []
-    for(let [id, value] of Object.entries(res)){
+    for (let [id, value] of Object.entries(res)) {
       let promise = new Promise((resolve, reject) => {
         this.rsaEncryption.privateDecrypt(value['encryptedVaultKey'])
           .then(vaultPassphrase => {
-            this.aesEncryption.generateAesKey(vaultPassphrase)
-              .then(aesKey => {
-                this.aesEncryption.decryptData(value['vaultData'], aesKey)
-                  .then(decryptedVault => {
-                    vaults.push(this.createVaultResponse(id, value, vaultPassphrase, decryptedVault));
-                    return resolve;
-                  })
-                  .catch(err => {
-                    console.warn('error decrypting data');
-                    return reject;
-                  })
-              })
-              .catch(err => {
-                console.warn('error generating aes key');
-                return reject;
-              })
+            const decryptedVault = this.chacha.decryptVault(value['vaultData'], vaultPassphrase)
+            vaults.push(this.createVaultResponse(id, value, vaultPassphrase, decryptedVault));
           })
           .catch(err => {
-            console.warn('error decrypting vaultkey');
+            console.warn('error decrypting data');
             return reject;
           })
       });
@@ -52,7 +43,8 @@ export class ParserService {
   }
 
   private createVaultResponse(id: string, value: unknown, vaultPassphrase: any, decryptedVault): VaultResponse {
-    return {id: id,
+    return {
+      id: id,
       key: vaultPassphrase,
       data: JSON.parse(decryptedVault),
       role: value['role'],

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {EncodingService} from "./encoding.service";
+import {Vault} from "../vaults/vault/models";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,62 @@ export class ChaCha20EncryptionService {
   private byteCounter;
   private block;
 
-  constructor(private encodingService: EncodingService) {
+  constructor(private encoding: EncodingService) {
+  }
+
+  public encryptVault(vaultData: Vault, vaultKeyPassphrase: string) {
+    const nonce = crypto.getRandomValues(new Uint8Array(8));
+    console.log('nonce', nonce)
+    const counter = crypto.getRandomValues(new Uint8Array(8));
+    console.log('counter', counter)
+    const key = new Uint8Array(this.encoding.convertStringToArrayBuffer(vaultKeyPassphrase));
+    const data = new Uint8Array(this.encoding.convertStringToArrayBuffer(JSON.stringify(vaultData)));
+
+    const encryptedVault = this.update(key, nonce, counter, data);
+    console.log('encryptedVault', encryptedVault);
+    const concatenatedBuffer = this.encoding.concatBuffers(encryptedVault.buffer, nonce.buffer, counter.buffer);
+    return this.encoding.convertArrayBufferToString(concatenatedBuffer);
+  }
+
+  public decryptVault(encryptedVault: string, vaultKeyPassphrase: string): string{
+    const nonce = this.encoding.stringToUint8Arr(encryptedVault.substring(encryptedVault.length - 16, encryptedVault.length - 8));
+    const counter = this.encoding.stringToUint8Arr(encryptedVault.substring(encryptedVault.length - 8));
+    const vault = this.encoding.stringToUint8Arr(encryptedVault.substring(0, encryptedVault.length - 16));
+    const key = this.encoding.stringToUint8Arr(vaultKeyPassphrase);
+
+    const decryptedVault = this.update(key, nonce, counter, vault);
+    return this.encoding.convertArrayBufferToString(decryptedVault.buffer);
+  }
+
+
+  public getRandom32ByteString() {
+    return Array.from(
+      crypto.getRandomValues(new Uint8Array(32)),
+      (dec) => ('0' + dec.toString(16)).substr(-2)).join('');
+  }
+
+  public update(key, nonce, counter, data) {
+    this.keyStream = new Array(64).fill(0);
+    let output = new Uint8Array(data.length)
+    this.byteCounter = 0;
+
+    //build block and xor with input data
+    for (let i = 0; i < data.length; i++) {
+      if (this.byteCounter === 0 || this.byteCounter === 64) {
+        // generate new block
+        this.generateChaChaBlock(key, nonce, counter);
+
+        counter = this.incrementCounter(counter);
+
+        // reset internal counter
+        this.byteCounter = 0
+      }
+
+      // xor generated stream with input
+      output[i] = data[i] ^ this.keyStream[this.byteCounter++]
+    }
+
+    return output
   }
 
   private rotate(data, shift) {
@@ -80,31 +136,7 @@ export class ChaCha20EncryptionService {
     }
   }
 
-  public update(key, nonce, counter, data) {
-    this.keyStream = new Array(64).fill(0);
-    let output = new Uint8Array(data.length)
-    this.byteCounter = 0;
-
-    //build block and xor with input data
-    for (let i = 0; i < data.length; i++) {
-      if (this.byteCounter === 0 || this.byteCounter === 64) {
-        // generate new block
-        this.generateChaChaBlock(key, nonce, counter);
-
-        counter = this.incrementCounter(counter);
-
-        // reset internal counter
-        this.byteCounter = 0
-      }
-
-      // xor generated stream with input
-      output[i] = data[i] ^ this.keyStream[this.byteCounter++]
-    }
-
-    return output
-  }
-
-  private incrementCounter(counter){
+  private incrementCounter(counter) {
     this.block[12]++;
     this.block[13]++;
 
@@ -114,9 +146,9 @@ export class ChaCha20EncryptionService {
     let secondPartCounter = this.getUint8ArrFromUint32(this.block[13])
 
     // set bytes on uint8array
-    for(let i = 0; i<4; i++){
+    for (let i = 0; i < 4; i++) {
       newCounter[i] = firstPartCounter[i];
-      newCounter[i+3] = secondPartCounter[i+3];
+      newCounter[i + 3] = secondPartCounter[i + 3];
     }
 
     return newCounter;

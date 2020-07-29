@@ -20,4 +20,16 @@ export class EncodingService {
     }
     return buffer;
   }
+
+  public concatBuffers(buffer1: ArrayBuffer, buffer2: ArrayBuffer, buffer3: ArrayBuffer){
+    let tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength + buffer3.byteLength);
+    tmp.set(new Uint8Array(buffer1), 0);
+    tmp.set(new Uint8Array(buffer2), buffer1.byteLength);
+    tmp.set(new Uint8Array(buffer3), buffer1.byteLength + buffer2.byteLength);
+    return tmp.buffer;
+  }
+
+  stringToUint8Arr(str: string) {
+    return new Uint8Array(this.convertStringToArrayBuffer(str));
+  }
 }

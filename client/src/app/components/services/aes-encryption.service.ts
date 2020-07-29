@@ -48,11 +48,6 @@ export class AesEncryptionService {
       });
   }
 
-  getRandom32ByteString() {
-    return Array.from(
-      crypto.getRandomValues(new Uint8Array(32)),
-      (dec) => ('0' + dec.toString(16)).substr(-2)).join('');
-  }
 
   private concatBuffers(buffer1: ArrayBuffer, buffer2: ArrayBuffer): ArrayBuffer {
     let tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);

@@ -6,8 +6,6 @@ import {ErrorHandlingService} from "./error-handling.service";
 import {UserService} from "./user.service";
 import {EncodingService} from "./encoding.service";
 import {ChaCha20EncryptionService} from "./cha-cha20-encryption.service";
-import {count} from "rxjs/operators";
-import {AuthenticationService} from "./authentication.service";
 
 @Injectable({providedIn: 'root'})
 export class RsaEncryptionService {
@@ -159,7 +157,7 @@ export class RsaEncryptionService {
     return this.encoding.convertStringToArrayBuffer(window.atob(privateKeyBase64));
   }
 
-  public static async generateHash(salt, passphrase){
+  public static async generateHash(salt, passphrase) {
     return await crypto.subtle.digest({name: 'SHA-256'}, new TextEncoder().encode(salt + passphrase));
   }
 }

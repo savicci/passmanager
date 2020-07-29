@@ -7,6 +7,7 @@ import {RsaEncryptionService} from "../../../services/rsa-encryption.service";
 import {EncodingService} from "../../../services/encoding.service";
 import {ParserService} from "./parser.service";
 import {HttpResponse} from "@angular/common/http";
+import {ChaCha20EncryptionService} from "../../../services/cha-cha20-encryption.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,26 +19,24 @@ export class VaultService {
               private vaultApi: VaultApiService,
               private rsaEncryption: RsaEncryptionService,
               private encoding: EncodingService,
-              private parser: ParserService) {
+              private parser: ParserService,
+              private chacha: ChaCha20EncryptionService) {
   }
 
   public async createNewVault(name: string) {
     let newVault = new Vault(name);
-    const aesKeyPassphrase = this.aesEncryption.getRandom32ByteString()
 
-    return this.aesEncryption.generateAesKey(aesKeyPassphrase)
-      .then(aesKey => {
-        this.aesEncryption.encryptData(JSON.stringify(newVault), aesKey)
-          .then(encryptedVault => {
-            this.rsaEncryption.publicEncrypt(aesKeyPassphrase)
-              .then(encryptedVaultKey => {
-                const requestBody = this.prepareAddRequest(name, encryptedVaultKey, encryptedVault);
-                this.vaultApi.addNewVault(requestBody)
-                  .then(res => res);
-              })
-          })
+    const vaultKeyPassphrase = this.chacha.getRandom32ByteString();
+    const encryptedVault = this.chacha.encryptVault(newVault, vaultKeyPassphrase);
+
+    this.rsaEncryption.publicEncrypt(vaultKeyPassphrase)
+      .then(encryptedVaultKey => {
+        const requestBody = this.prepareAddRequest(name, encryptedVaultKey, encryptedVault);
+        this.vaultApi.addNewVault(requestBody)
       })
-      .catch(err => console.warn(err))
+      .catch(err => {
+        throw err;
+      })
   }
 
   public getAllVaults() {
@@ -52,13 +51,9 @@ export class VaultService {
 
   public modifyVault(vault: Vault, id, vaultPassphrase) {
     vault.garbageData = this.generateGarbageData();
-    return this.aesEncryption.generateAesKey(vaultPassphrase)
-      .then(aesKey => {
-        this.aesEncryption.encryptData(JSON.stringify(vault), aesKey)
-          .then(encryptedVault => {
-            this.vaultApi.modifyVault(id, encryptedVault)
-          })
-      })
+    const encryptedVault = this.chacha.encryptVault(vault, vaultPassphrase);
+
+    return this.vaultApi.modifyVault(id, encryptedVault);
   }
 
   deleteVault(id: any) {

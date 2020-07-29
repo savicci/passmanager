@@ -35,4 +35,8 @@ export class UserService {
   setUserInfo(body){
     sessionStorage.setItem('userInfo', JSON.stringify(body));
   }
+
+  public generateHash(salt, passphrase){
+    return crypto.subtle.digest({name: 'SHA-256'}, new TextEncoder().encode(salt + passphrase));
+  }
 }
