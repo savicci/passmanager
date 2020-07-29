@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {EncodingService} from "./encoding.service";
 
 @Injectable({
   providedIn: 'root'
@@ -7,17 +8,17 @@ export class ChaCha20EncryptionService {
   private readonly rounds = 20;
   private readonly constants = [0x61707865, 0x3523646e, 0x76626d32, 0x6b226544];
   private keyStream;
-  private byteCounter = 0;
+  private byteCounter;
   private block;
 
-  constructor() {
+  constructor(private encodingService: EncodingService) {
   }
 
-  private rotate (data, shift) {
+  private rotate(data, shift) {
     return ((data << shift) | (data >>> (32 - shift)))
   }
 
-  private quarterRound (output, a, b, c, d) {
+  private quarterRound(output, a, b, c, d) {
     output[d] = this.rotate(output[d] ^ (output[a] += output[b]), 16)
     output[b] = this.rotate(output[b] ^ (output[c] += output[d]), 12)
     output[d] = this.rotate(output[d] ^ (output[a] += output[b]), 8)
@@ -31,23 +32,23 @@ export class ChaCha20EncryptionService {
   }
 
   // little endian to uint32
-  private getUint32 (data, index) {
+  private getUint32(data, index) {
     return data[index++] ^ (data[index++] << 8) ^ (data[index++] << 16) ^ (data[index] << 24)
   }
 
-  private chachaBlock(key, nonce, counter){
+  private generateChaChaBlockBlock(key, nonce, counter) {
     return [
       this.constants[0], this.constants[1], this.constants[2], this.constants[3],
       this.getUint32(key, 0), this.getUint32(key, 4), this.getUint32(key, 8), this.getUint32(key, 12),
       this.getUint32(key, 16), this.getUint32(key, 20), this.getUint32(key, 24), this.getUint32(key, 28),
-      counter, this.getUint32(nonce, 0 ), this.getUint32(nonce, 4), this.getUint32(nonce, 8)
+      this.getUint32(counter, 0), this.getUint32(counter, 4), this.getUint32(nonce, 0), this.getUint32(nonce, 4)
     ];
   }
 
-  private chacha(key, nonce, counter){
-    let mix = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    let b = 0
-    this.block = this.chachaBlock(key, nonce, counter);
+  private generateChaChaBlock(key, nonce, counter) {
+    let mix = new Array(16).fill(0);
+    let keyStreamByteCounter = 0
+    this.block = this.generateChaChaBlockBlock(key, nonce, counter);
 
     // copy param array to mix //
     for (let i = 0; i < 16; i++) {
@@ -72,35 +73,59 @@ export class ChaCha20EncryptionService {
       mix[i] += this.block[i];
 
       // store keystream
-      this.keyStream[b++] = mix[i] & 0xFF
-      this.keyStream[b++] = (mix[i] >>> 8) & 0xFF
-      this.keyStream[b++] = (mix[i] >>> 16) & 0xFF
-      this.keyStream[b++] = (mix[i] >>> 24) & 0xFF
+      this.keyStream[keyStreamByteCounter++] = mix[i] & 0xFF
+      this.keyStream[keyStreamByteCounter++] = (mix[i] >>> 8) & 0xFF
+      this.keyStream[keyStreamByteCounter++] = (mix[i] >>> 16) & 0xFF
+      this.keyStream[keyStreamByteCounter++] = (mix[i] >>> 24) & 0xFF
     }
   }
 
-  public update(key, nonce, counter, data){
+  public update(key, nonce, counter, data) {
     this.keyStream = new Array(64).fill(0);
     let output = new Uint8Array(data.length)
     this.byteCounter = 0;
 
-    // core function, build block and xor with input data //
+    //build block and xor with input data
     for (let i = 0; i < data.length; i++) {
       if (this.byteCounter === 0 || this.byteCounter === 64) {
-        // generate new block //
+        // generate new block
+        this.generateChaChaBlock(key, nonce, counter);
 
-        this.chacha(key, nonce, counter);
-        // counter increment //
-        this.block[12]++;
+        counter = this.incrementCounter(counter);
 
-        // reset internal counter //
+        // reset internal counter
         this.byteCounter = 0
       }
 
+      // xor generated stream with input
       output[i] = data[i] ^ this.keyStream[this.byteCounter++]
     }
 
     return output
   }
 
+  private incrementCounter(counter){
+    this.block[12]++;
+    this.block[13]++;
+
+    // convert uint32 values to uint8 arrays
+    let newCounter = new Uint8Array(8);
+    let firstPartCounter = this.getUint8ArrFromUint32(this.block[12])
+    let secondPartCounter = this.getUint8ArrFromUint32(this.block[13])
+
+    // set bytes on uint8array
+    for(let i = 0; i<4; i++){
+      newCounter[i] = firstPartCounter[i];
+      newCounter[i+3] = secondPartCounter[i+3];
+    }
+
+    return newCounter;
+  }
+
+  private getUint8ArrFromUint32(blockElement: any) {
+    let arr = new ArrayBuffer(4);
+    let dataView = new DataView(arr);
+    dataView.setInt32(0, blockElement, true);
+    return new Uint8Array(arr);
+  }
 }

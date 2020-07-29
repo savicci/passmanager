@@ -24,12 +24,14 @@ describe('ChaCha20EncryptionService', () => {
     ])
 
     const nonce = new Uint8Array([
-      0x00, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x4a,
-      0x00, 0x00, 0x00, 0x00
+      0x48, 0x12, 0x00, 0x00,
+      0x73,  0xa3, 0xc3, 0x4a,
     ])
 
-    const counter = 1;
+    const counter = new Uint8Array([
+      0x6a, 0x26, 0x00, 0x62,
+      0x3a, 0x61, 0x73, 0x15,
+    ]);
 
     // const text = new Uint8Array([
     //   0x4c, 0x61, 0x64, 0x69, 0x65, 0x73, 0x20, 0x61, 0x6e, 0x64, 0x20, 0x47, 0x65, 0x6e, 0x74, 0x6c,
@@ -42,10 +44,13 @@ describe('ChaCha20EncryptionService', () => {
     //   0x74, 0x2e
     // ])
 
-    const text = new TextEncoder().encode('test text hahasdbhui23t  HB7U8IVWEH789WVUNIAERQ243TH879-VEH897-FFNION23OIGFUIHBNU930Q4HG80H8BZH8GHQ347T798GH89HGA347809yhbbuysghawe4r');
+    const text = new TextEncoder().encode('tese4rq9fyc-tnh03f7u34n89tv348q9gajogqp38jhg9vuihbZ*&(fhv4389qphfv89pap9ega34ga' +
+      'rhsrth45wshae089ghuj8934qug6748dc74d8c654sd8654sd4568fdtyusxr568srur6s564s563az7u6trd743za5674s7564a3z4375ss534as47345assa4357435ass347374s734sd437573e45ertysreexywszwexyrt46yws5x37453d5763d4ceexrcsexyrwex6ws3x63w6x6w34w63');
     console.log(text);
 
     let cipherText = service.update(key, nonce, counter, text);
+    console.log('encrypted')
+
     let decrypted = service.update(key, nonce, counter, cipherText);
     console.log(decrypted);
 
