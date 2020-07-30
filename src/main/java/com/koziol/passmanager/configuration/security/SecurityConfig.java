@@ -27,16 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase()))
                 .and()
                 .authorizeRequests()
-                .antMatchers("/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js",
-                        "/auth/register",
-                        "/public")
+                .antMatchers("/auth/register")
                 .permitAll()
                 .and()
                 .authorizeRequests()

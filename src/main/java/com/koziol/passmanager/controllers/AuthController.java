@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @RestController
@@ -24,9 +23,8 @@ import java.util.Optional;
 public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private CustomUserDetailsService userDetailsService;
-
-    private SessionRegistry sessionRegistry = new SessionRegistryImpl();
+    private final CustomUserDetailsService userDetailsService;
+    private final SessionRegistry sessionRegistry = new SessionRegistryImpl();
 
     @Autowired
     public AuthController(PasswordEncoder passwordEncoder, UserRepository userRepository, CustomUserDetailsService userDetailsService) {
@@ -59,10 +57,10 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<?> logoutUser(HttpServletRequest request, HttpServletResponse response, Authentication authentication){
+    public ResponseEntity<?> logoutUser(HttpServletRequest request) {
         SecurityContextHolder.clearContext();
+        request.getSession().invalidate();
         sessionRegistry.removeSessionInformation(request.getSession().getId());
-        //TODO take care of deleting cookie on redis side(only deletes one of 4)
-        return ResponseEntity.ok("all good man");
+        return ResponseEntity.ok("Succesfully logged out");
     }
 }
