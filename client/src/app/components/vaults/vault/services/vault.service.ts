@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Vault} from "../models";
 import {UserService} from "../../../services/user.service";
-import {AesEncryptionService} from "../../../services/aes-encryption.service";
 import {VaultApiService} from "./vault-api.service";
 import {RsaEncryptionService} from "../../../services/rsa-encryption.service";
 import {EncodingService} from "../../../services/encoding.service";
@@ -15,7 +14,6 @@ import {ChaCha20EncryptionService} from "../../../services/cha-cha20-encryption.
 export class VaultService {
 
   constructor(private userService: UserService,
-              private aesEncryption: AesEncryptionService,
               private vaultApi: VaultApiService,
               private rsaEncryption: RsaEncryptionService,
               private encoding: EncodingService,
@@ -75,7 +73,6 @@ export class VaultService {
     let arr = new Uint8Array((numberOfBytes || 40) / 2)
     crypto.getRandomValues(arr)
     let x = Array.from(arr, this.dec2hex).join('');
-    console.log(x)
     return x;
   }
 

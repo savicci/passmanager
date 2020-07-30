@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {VaultResponse} from "../models";
 import {RsaEncryptionService} from "../../../services/rsa-encryption.service";
-import {AesEncryptionService} from "../../../services/aes-encryption.service";
 import {EncodingService} from "../../../services/encoding.service";
 import {ChaCha20EncryptionService} from "../../../services/cha-cha20-encryption.service";
 
@@ -11,7 +10,6 @@ import {ChaCha20EncryptionService} from "../../../services/cha-cha20-encryption.
 export class ParserService {
 
   constructor(private rsaEncryption: RsaEncryptionService,
-              private aesEncryption: AesEncryptionService,
               private encoding: EncodingService,
               private chacha: ChaCha20EncryptionService) {
   }

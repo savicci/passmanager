@@ -17,14 +17,11 @@ export class ChaCha20EncryptionService {
 
   public encryptVault(vaultData: Vault, vaultKeyPassphrase: string) {
     const nonce = crypto.getRandomValues(new Uint8Array(8));
-    console.log('nonce', nonce)
     const counter = crypto.getRandomValues(new Uint8Array(8));
-    console.log('counter', counter)
     const key = new Uint8Array(this.encoding.convertStringToArrayBuffer(vaultKeyPassphrase));
     const data = new Uint8Array(this.encoding.convertStringToArrayBuffer(JSON.stringify(vaultData)));
 
     const encryptedVault = this.update(key, nonce, counter, data);
-    console.log('encryptedVault', encryptedVault);
     const concatenatedBuffer = this.encoding.concatBuffers(encryptedVault.buffer, nonce.buffer, counter.buffer);
     return this.encoding.convertArrayBufferToString(concatenatedBuffer);
   }

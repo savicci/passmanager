@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {RsaEncryption} from "../encryption/RsaEncryption";
+import {RsaEncryption} from "./RsaEncryption";
 import {ErrorHandlingService} from "./error-handling.service";
 import {UserService} from "./user.service";
 import {EncodingService} from "./encoding.service";
@@ -48,15 +48,12 @@ export class RsaEncryptionService {
 
   private async importRsaKeys(response: any, passphrase: string) {
     const symmKey = await RsaEncryptionService.generateHash(response.username, passphrase);
-    console.log(new Uint8Array(symmKey))
+
     const unwrappedPublicKey = this.unwrapPublicKey(response.publicKey);
     const unwrappedPrivateKey = this.unwrapPrivateKey(response.encryptedPrivateKey);
 
-    console.log('import before decryption')
-    console.log(new Uint8Array(unwrappedPrivateKey))
     const decryptedPrivateKey = this.chacha.update(new Uint8Array(symmKey), this.nonce, this.counter, new Uint8Array(unwrappedPrivateKey));
-    console.log(decryptedPrivateKey);
-    console.log(window.btoa(String.fromCharCode.apply(null, decryptedPrivateKey)))
+
     const publicKey = await window.crypto.subtle.importKey(
       "spki",
       unwrappedPublicKey,
@@ -79,7 +76,6 @@ export class RsaEncryptionService {
       ["decrypt"]
     );
 
-    console.log('debug');
     this.keys = {publicKey, privateKey};
   }
 
@@ -102,20 +98,7 @@ export class RsaEncryptionService {
       keys.privateKey,
     );
 
-    console.log('nonce before', nonce)
-    console.log('counter before', counter)
-    console.log('key before', new Uint8Array(chachaKey))
-
-    console.log('private key before encryption')
-    console.log(new Uint8Array(privateKeyExport))
-    console.log(window.btoa(String.fromCharCode.apply(null, new Uint8Array(privateKeyExport))))
-
     const encryptedPrivateKey = this.chacha.update(new Uint8Array(chachaKey), nonce, counter, new Uint8Array(privateKeyExport))
-    console.log('private key after encryption')
-    console.log(encryptedPrivateKey);
-
-    console.log(window.btoa(String.fromCharCode.apply(null, encryptedPrivateKey)))
-
     const publicKeyPem = this.wrapPublicKey(publicKeyExport);
     const privateKeyPem = this.wrapPrivateKey(encryptedPrivateKey, nonce, counter);
 
@@ -150,10 +133,7 @@ export class RsaEncryptionService {
     const nonceBase64 = wrappedPrivateKey.substring(wrappedPrivateKey.length - this.privateKeyFooter.length - 25, wrappedPrivateKey.length - this.publicKeyFooter.length - 14);
     this.nonce = new Uint8Array(this.encoding.convertStringToArrayBuffer(window.atob(nonceBase64)));
 
-    console.log('counter', this.counter);
-    console.log('nonce', this.nonce);
     const privateKeyBase64 = wrappedPrivateKey.substring(this.privateKeyHeader.length + 1, wrappedPrivateKey.length - this.privateKeyFooter.length - 25);
-    console.log(privateKeyBase64)
     return this.encoding.convertStringToArrayBuffer(window.atob(privateKeyBase64));
   }
 

@@ -25,12 +25,8 @@ export class VaultUserApiService {
       encryptedVaultKey: encryptedKey,
       role: role
     };
-    console.log(requestBody);
     return this.httpClient.post('/vaultuser/add', requestBody, {observe: 'response', responseType: 'text'}).toPromise()
-      .then(res => {
-        console.log(res);
-        return res;
-      })
+      .then(res => res)
       .catch(err => {
         throw err;
       })

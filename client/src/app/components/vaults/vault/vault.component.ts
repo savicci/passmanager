@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {PassphraseService} from "../../services/passphrase.service";
 import {FormBuilder} from "@angular/forms";
 import {VaultService} from "./services/vault.service";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateVaultComponent} from "./dialogs/create-vault/create-vault.component";
 import {ActivatedRoute, Router} from "@angular/router";
+import {PassphraseDialogComponent} from "../../passphrase-dialog/passphrase-dialog.component";
+
+;
 
 @Component({
   selector: 'app-vault',
@@ -17,8 +19,7 @@ export class VaultComponent implements OnInit {
   sideNavOpened: boolean = true;
   vaultForm: any;
 
-  constructor(private passphraseService: PassphraseService,
-              private formBuilder: FormBuilder,
+  constructor(private formBuilder: FormBuilder,
               private vaultService: VaultService,
               private dialog: MatDialog,
               private router: Router,
@@ -31,8 +32,14 @@ export class VaultComponent implements OnInit {
 
   ngOnInit(): void {
     if (sessionStorage.getItem('userInfo') != null) {
-      if(!this.vaults){
-        const dialogRef = this.passphraseService.requestPassphrase('Please enter passphrase for decryption of keys');
+      if (!this.vaults) {
+        const dialogRef = this.dialog.open(PassphraseDialogComponent, {
+          width: '300px',
+          disableClose: true,
+          data: {
+            text: 'Please enter passphrase for decryption of keys'
+          }
+        });
 
         dialogRef.afterClosed().subscribe(() => {
           this.refreshVaults();
@@ -66,9 +73,9 @@ export class VaultComponent implements OnInit {
 
   selectedVault() {
     const id = this.route.snapshot.params['id'];
-    if(id && !this.vaults){
+    if (id && !this.vaults) {
       this.router.navigate(['/vault'])
-    }else{
+    } else {
       return this.vaults.find(vault => {
         return id === vault.id;
       })
