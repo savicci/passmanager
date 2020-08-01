@@ -24,10 +24,10 @@ public class DatabaseConfig {
     @Profile("prod")
     public DataSource getDataSourcePROD(){
         return DataSourceBuilder.create()
-                .driverClassName("com.mysql.cj.jdbc.Driver")
-                .url("jdbc:mysql://localhost:3306/passmanager")
-                .username("passapp")
-                .password("14550vcn23kjg90sz03gs566j")
+                .driverClassName("org.h2.Driver")
+                .url("jdbc:h2:file:~/db/passmanager;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE")
+                .username("admin")
+                .password("fj091j90vnoim21-vjhas")
                 .build();
     }
 

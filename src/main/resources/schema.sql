@@ -1,4 +1,4 @@
-create table user
+create table if not exists user
 (
     USER_ID               INT AUTO_INCREMENT PRIMARY KEY,
     EMAIL                 VARCHAR(320) UNIQUE NOT NULL,
@@ -7,13 +7,13 @@ create table user
     PUBLIC_KEY            VARBINARY(2048)     NOT NULL
 );
 
-create table vault_role
+create table if not exists vault_role
 (
     VAULT_ROLE_ID INT AUTO_INCREMENT PRIMARY KEY,
     ROLE_NAME     VARCHAR(255) NOT NULL
 );
 
-create table vault
+create table if not exists vault
 (
     VAULT_ID      INT AUTO_INCREMENT PRIMARY KEY,
     VAULT_NAME    VARCHAR(100) NOT NULL,
@@ -25,7 +25,7 @@ create table vault
     CONSTRAINT FK_VAULT_CREATED_BY FOREIGN KEY (CREATED_BY) REFERENCES user (USER_ID)
 ) ENGINE = InnoDB;
 
-create table vault_user
+create table if not exists vault_user
 (
     VAULT_USER_ID INT AUTO_INCREMENT PRIMARY KEY,
     VAULT_ID      INT      NOT NULL,
