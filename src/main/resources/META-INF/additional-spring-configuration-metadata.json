@@ -4,5 +4,10 @@
       "name": "server.ssl.port",
       "type": "java.lang.String",
       "description": "Description for server.ssl.port."
-  }
-] }
+    },
+    {
+      "name": "password.encryption.hashSize",
+      "type": "java.lang.String",
+      "description": "Description for password.encryption.hashSize."
+    }
+  ] }

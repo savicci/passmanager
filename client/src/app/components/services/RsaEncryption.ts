@@ -3,9 +3,6 @@
 export class RsaEncryption {
   private static publicKeyHeader: string = '-----BEGIN PUBLIC KEY-----';
   private static publicKeyFooter: string = '-----END PUBLIC KEY-----';
-  private static privateKeyHeader: string = '-----BEGIN PRIVATE KEY-----';
-  private static privateKeyFooter: string = '-----END PRIVATE KEY-----';
-  private static readonly ivPlusPadding: number = 17;
 
   static async generateRsaKeyPair(): Promise<CryptoKeyPair> {
     return window.crypto.subtle.generateKey(
