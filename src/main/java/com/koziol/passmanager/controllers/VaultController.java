@@ -81,6 +81,10 @@ public class VaultController {
             return new ResponseEntity<>("Could not find vault with given name", HttpStatus.NOT_FOUND);
         }
 
+        if(!vaultUserToDelete.get().getVaultRole().getRoleName().equals("CREATOR")){
+            return new ResponseEntity<>("Only creator of this vault can delete it", HttpStatus.FORBIDDEN);
+        }
+
         Vault vaultToDelete = vaultUserToDelete.get().getVault();
 
         vaultUserRepository.deleteInBatch(vaultToDelete.getVaultUsers());

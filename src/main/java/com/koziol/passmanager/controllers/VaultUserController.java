@@ -84,10 +84,6 @@ public class VaultUserController {
             return new ResponseEntity<>("you have no permission to delete user from vault", HttpStatus.FORBIDDEN);
         }
 
-        if(request.getEmail().equals(user.getEmail()) && vaultUserOptional.get().getVaultRole().getRoleName().equals("CREATOR")){
-            return new ResponseEntity<>("You can't delete yourself from your vault", HttpStatus.FORBIDDEN);
-        }
-
         Optional<VaultUser> vaultUserToDelete = vaultUserOptional.get().getVault()
                 .getVaultUsers()
                 .stream()
@@ -96,6 +92,10 @@ public class VaultUserController {
 
         if (vaultUserToDelete.isEmpty()) {
             return new ResponseEntity<>("Provided email does not have access to vault", HttpStatus.NOT_FOUND);
+        }
+
+        if(vaultUserToDelete.get().getVaultRole().getRoleName().equals("CREATOR")){
+            return new ResponseEntity<>("You can't delete creator from vault", HttpStatus.FORBIDDEN);
         }
 
         vaultUserRepository.delete(vaultUserToDelete.get());
