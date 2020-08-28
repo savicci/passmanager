@@ -1,7 +1,7 @@
 create table if not exists user
 (
     USER_ID               INT AUTO_INCREMENT PRIMARY KEY,
-    EMAIL                 VARCHAR(320) UNIQUE NOT NULL,
+    EMAIL                 VARCHAR(255) UNIQUE NOT NULL,
     PASSWORD              CHAR(80)            NOT NULL,
     ENCRYPTED_PRIVATE_KEY VARBINARY(2048)     NOT NULL,
     PUBLIC_KEY            VARBINARY(2048)     NOT NULL

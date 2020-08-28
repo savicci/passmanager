@@ -53,7 +53,14 @@ import {VaultUserRowComponent} from "./components/vaults/vault/vault-users/vault
     MaterialModule
   ],
   providers: [AuthenticationService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    PassphraseDialogComponent,
+    CreateVaultComponent,
+    VaultUsersComponent,
+    VaultInfoComponent,
+    CreateEntryComponent
+  ]
 })
 export class AppModule {
 }

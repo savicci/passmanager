@@ -1,7 +1,7 @@
 {
   "/auth/": {
     "target": "https://localhost:8443",
-    "secure": false,
+    "secure": true,
     "logLevel": "debug"
   },
   "/vault/add": {

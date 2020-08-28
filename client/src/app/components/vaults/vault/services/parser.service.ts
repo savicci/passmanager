@@ -19,8 +19,10 @@ export class ParserService {
     let operations = []
     for (let [id, value] of Object.entries(res)) {
       let promise = new Promise((resolve, reject) => {
+        console.log("gotten", new Uint8Array(this.encoding.convertStringToArrayBuffer(value['encryptedVaultKey'])))
         this.rsaEncryption.privateDecrypt(value['encryptedVaultKey'])
           .then(vaultPassphrase => {
+            console.log("vaultpassphrase", vaultPassphrase);
             const decryptedVault = this.chacha.decryptVault(value['vaultData'], vaultPassphrase)
             vaults.push(this.createVaultResponse(id, value, vaultPassphrase, decryptedVault));
           })

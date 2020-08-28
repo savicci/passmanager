@@ -80,7 +80,7 @@ public class VaultUserController {
             return new ResponseEntity<>("vault not found", HttpStatus.NOT_FOUND);
         }
 
-        if (!(vaultUserOptional.get().getVaultRole().getRoleName().equals("ADMIN") || vaultUserOptional.get().getVaultRole().getRoleName().equals("CREATOR"))) {
+        if (!userHasModifyPrivileges(vaultUserOptional) && !userWantsToDeleteHimself(request, user)) {
             return new ResponseEntity<>("you have no permission to delete user from vault", HttpStatus.FORBIDDEN);
         }
 
@@ -102,6 +102,14 @@ public class VaultUserController {
         return ResponseEntity.ok("User deleted from vault");
     }
 
+    private boolean userWantsToDeleteHimself(DeleteVaultUserRQ request, User user) {
+        return request.getEmail().equals(user.getEmail());
+    }
+
+    private boolean userHasModifyPrivileges(Optional<VaultUser> vaultUserOptional) {
+        return vaultUserOptional.get().getVaultRole().getRoleName().equals("ADMIN") || vaultUserOptional.get().getVaultRole().getRoleName().equals("CREATOR");
+    }
+
     @PostMapping("/changepermission")
     public ResponseEntity<?> changePermissionsForUser(@RequestBody PermissionChangeRQ request, Authentication authentication) {
         User user = getUser(authentication);
@@ -115,7 +123,7 @@ public class VaultUserController {
             return new ResponseEntity<>("vault not found", HttpStatus.NOT_FOUND);
         }
 
-        if (!(vaultUserOptional.get().getVaultRole().getRoleName().equals("ADMIN") || vaultUserOptional.get().getVaultRole().getRoleName().equals("CREATOR"))) {
+        if (!(userHasModifyPrivileges(vaultUserOptional))) {
             return new ResponseEntity<>("you can't modify user permission for this vault", HttpStatus.FORBIDDEN);
         }
 
