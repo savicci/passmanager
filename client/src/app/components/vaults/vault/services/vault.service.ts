@@ -69,11 +69,10 @@ export class VaultService {
 
   private generateGarbageData() {
     // between 0 and 512 bytes of data will be generated
-    let numberOfBytes = Math.floor(Math.random() * 512);
+    let numberOfBytes = Math.floor(Math.random() * 256);
     let arr = new Uint8Array(numberOfBytes);
     crypto.getRandomValues(arr);
-    let x = Array.from(arr, this.dec2hex).join('');
-    return x;
+    return Array.from(arr, this.dec2hex).join('');
   }
 
   dec2hex (dec) {
